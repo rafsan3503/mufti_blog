@@ -1,0 +1,102 @@
+.main {
+    padding-top: calc(var(--header-height) + var(--space-2xl));
+    padding-bottom: var(--space-3xl);
+    min-height: 100vh;
+}
+
+.pageHeader {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+}
+
+.pageTitle {
+    font-size: var(--fs-3xl);
+    color: var(--color-primary);
+    margin-bottom: var(--space-sm);
+}
+
+.pageSubtitle {
+    font-size: var(--fs-md);
+    color: var(--color-text-secondary);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filterBtn {
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--fs-sm);
+    font-family: var(--font-bengali);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-bg-card);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.filterBtn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.filterBtn.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+/* Audio Grid */
+.audioGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+}
+
+/* Empty State */
+.emptyState {
+    text-align: center;
+    padding: var(--space-3xl);
+    color: var(--color-text-muted);
+}
+
+.emptyState svg {
+    margin-bottom: var(--space-lg);
+    opacity: 0.3;
+}
+
+.emptyState h3 {
+    font-size: var(--fs-lg);
+    margin-bottom: var(--space-sm);
+}
+
+.emptyState p {
+    font-size: var(--fs-sm);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .audioGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .filters {
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: var(--space-sm);
+    }
+
+    .filterBtn {
+        flex-shrink: 0;
+    }
+}

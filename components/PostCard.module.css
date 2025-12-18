@@ -1,0 +1,107 @@
+.card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    transition: all var(--transition-base);
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-lg) 0;
+}
+
+.audioIndicator {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--fs-xs);
+    color: var(--color-accent-dark);
+    background: rgba(212, 168, 83, 0.1);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-full);
+}
+
+.cardBody {
+    display: block;
+    padding: var(--space-md) var(--space-lg);
+    flex: 1;
+}
+
+.title {
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-sm);
+    line-height: 1.4;
+    transition: color var(--transition-fast);
+}
+
+.card:hover .title {
+    color: var(--color-primary);
+}
+
+.excerpt {
+    font-size: var(--fs-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-lg);
+    border-top: 1px solid var(--color-border-light);
+    background: var(--color-bg-primary);
+}
+
+.meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.date,
+.readTime {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--fs-xs);
+    color: var(--color-text-muted);
+}
+
+.tags {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+.smallTag {
+    font-size: 10px;
+    padding: 2px 8px;
+}
+
+@media (max-width: 480px) {
+    .cardFooter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-sm);
+    }
+
+    .tags {
+        width: 100%;
+    }
+}

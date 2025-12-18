@@ -1,0 +1,115 @@
+.main {
+    padding-top: calc(var(--header-height) + var(--space-2xl));
+    padding-bottom: var(--space-3xl);
+    min-height: 100vh;
+}
+
+.pageHeader {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+}
+
+.pageTitle {
+    font-size: var(--fs-3xl);
+    color: var(--color-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.pageSubtitle {
+    font-size: var(--fs-md);
+    color: var(--color-text-secondary);
+}
+
+.categoriesGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+}
+
+.categoryCard {
+    background: var(--color-bg-card);
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    text-align: center;
+    transition: all var(--transition-base);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    border: 2px solid transparent;
+}
+
+.categoryCard:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+}
+
+.categoryIcon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(13, 74, 74, 0.1);
+    color: var(--color-primary);
+    border-radius: 50%;
+    margin-bottom: var(--space-sm);
+}
+
+.categoryName {
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.categoryCount {
+    font-size: var(--fs-sm);
+    color: var(--color-accent-dark);
+    background: rgba(212, 168, 83, 0.15);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+}
+
+.categoryDesc {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    flex: 1;
+}
+
+.viewMore {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--fs-sm);
+    color: var(--color-primary);
+    margin-top: var(--space-sm);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all var(--transition-base);
+}
+
+.categoryCard:hover .viewMore {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 1024px) {
+    .categoriesGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .categoriesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .categoriesGrid {
+        grid-template-columns: 1fr;
+    }
+}

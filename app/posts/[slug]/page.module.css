@@ -1,0 +1,224 @@
+.main {
+    padding-top: calc(var(--header-height) + var(--space-2xl));
+    min-height: 100vh;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xl);
+}
+
+.breadcrumb a {
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+}
+
+.breadcrumb a:hover {
+    color: var(--color-primary);
+}
+
+.contentGrid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: var(--space-2xl);
+}
+
+.postContent {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.postHeader {
+    padding: var(--space-2xl);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.postMeta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    flex-wrap: wrap;
+}
+
+.date,
+.readTime {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+}
+
+.postTitle {
+    font-size: var(--fs-3xl);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+    line-height: 1.3;
+}
+
+.postExcerpt {
+    font-size: var(--fs-md);
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+}
+
+/* Audio Player */
+.audioPlayer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    margin: var(--space-lg) var(--space-2xl);
+    padding: var(--space-lg);
+    background: rgba(13, 74, 74, 0.05);
+    border-radius: var(--radius-lg);
+    border-left: 4px solid var(--color-primary);
+}
+
+.audioIcon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary);
+    color: var(--color-text-light);
+    border-radius: 50%;
+}
+
+.audioLabel {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    display: block;
+}
+
+.audioNote {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+}
+
+/* Post Body */
+.postBody {
+    padding: var(--space-2xl);
+    font-family: var(--font-bengali);
+    font-size: var(--fs-md);
+    line-height: 2;
+    color: var(--color-text-secondary);
+}
+
+.postBody h2 {
+    font-size: var(--fs-xl);
+    color: var(--color-primary);
+    margin: var(--space-xl) 0 var(--space-md);
+}
+
+.postBody h3 {
+    font-size: var(--fs-lg);
+    color: var(--color-text-primary);
+    margin: var(--space-lg) 0 var(--space-sm);
+}
+
+.postBody p {
+    margin-bottom: var(--space-md);
+}
+
+.postBody ul,
+.postBody ol {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-xl);
+}
+
+.postBody li {
+    margin-bottom: var(--space-sm);
+}
+
+.postBody blockquote {
+    border-left: 4px solid var(--color-accent);
+    padding-left: var(--space-lg);
+    margin: var(--space-lg) 0;
+    font-style: italic;
+    color: var(--color-text-muted);
+}
+
+/* Post Footer */
+.postFooter {
+    padding: var(--space-xl) var(--space-2xl);
+    border-top: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+}
+
+.tags {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+}
+
+.tagsLabel,
+.shareLabel {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    margin-right: var(--space-xs);
+}
+
+.share {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.shareBtn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(13, 74, 74, 0.1);
+    color: var(--color-primary);
+    transition: all var(--transition-fast);
+}
+
+.shareBtn:hover {
+    background: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .contentGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .postHeader,
+    .postBody,
+    .postFooter {
+        padding: var(--space-lg);
+    }
+
+    .audioPlayer {
+        margin: var(--space-md) var(--space-lg);
+    }
+
+    .postTitle {
+        font-size: var(--fs-2xl);
+    }
+
+    .postFooter {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

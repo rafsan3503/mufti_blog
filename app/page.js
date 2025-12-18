@@ -1,66 +1,99 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Header from '@/components/Header';
+import Hero from '@/components/Hero';
+import PostCard from '@/components/PostCard';
+import AudioCard from '@/components/AudioCard';
+import Sidebar from '@/components/Sidebar';
+import Footer from '@/components/Footer';
+import { posts, categories, getRecentPosts } from '@/data/posts';
+import { getRecentAudio } from '@/data/audio';
+import styles from './page.module.css';
 
 export default function Home() {
+  const recentPosts = getRecentPosts(4);
+  const recentAudio = getRecentAudio(4);
+  const sidebarCategories = categories.slice(0, 6);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <>
+      <Header />
+      <main>
+        <Hero />
+
+        {/* Posts Section */}
+        <section className={`section ${styles.postsSection}`}>
+          <div className="container">
+            <div className={styles.sectionHeader}>
+              <div>
+                <h2 className={styles.sectionTitle}>সাম্প্রতিক প্রবন্ধ</h2>
+                <p className={styles.sectionSubtitle}>ইসলামী জ্ঞান ও জীবনের পথনির্দেশ</p>
+              </div>
+              <a href="/posts" className="btn btn-outline">সব দেখুন</a>
+            </div>
+
+            <div className={styles.contentGrid}>
+              <div className={styles.postsGrid}>
+                {recentPosts.map((post) => (
+                  <PostCard key={post.id} post={post} />
+                ))}
+              </div>
+
+              <Sidebar
+                categories={sidebarCategories}
+                recentPosts={posts.slice(0, 4).map(p => ({
+                  title: p.title,
+                  slug: p.slug,
+                  date: p.date,
+                  hasAudio: p.hasAudio
+                }))}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Audio Section */}
+        <section className={`section ${styles.audioSection}`}>
+          <div className="container">
+            <div className={styles.sectionHeader}>
+              <div>
+                <h2 className={styles.sectionTitle}>অডিও লেকচার</h2>
+                <p className={styles.sectionSubtitle}>শুনুন ইসলামী বয়ান ও তিলাওয়াত</p>
+              </div>
+              <a href="/audio" className="btn btn-primary">সব অডিও</a>
+            </div>
+
+            <div className={styles.audioGrid}>
+              {recentAudio.map((audio) => (
+                <AudioCard key={audio.id} audio={audio} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Categories Section */}
+        <section className={`section ${styles.categoriesSection}`}>
+          <div className="container">
+            <div className={styles.sectionHeaderCenter}>
+              <h2 className={styles.sectionTitle}>বিভাগসমূহ</h2>
+              <p className={styles.sectionSubtitle}>বিষয়ভিত্তিক ইসলামী জ্ঞান অন্বেষণ করুন</p>
+            </div>
+
+            <div className={styles.categoriesGrid}>
+              {categories.map((category, index) => (
+                <a
+                  key={index}
+                  href={`/category/${category.slug}`}
+                  className={styles.categoryCard}
+                >
+                  <span className={styles.categoryName}>{category.name}</span>
+                  <span className={styles.categoryCount}>{category.count} প্রবন্ধ</span>
+                  <p className={styles.categoryDesc}>{category.description}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
-    </div>
+      <Footer />
+    </>
   );
 }
