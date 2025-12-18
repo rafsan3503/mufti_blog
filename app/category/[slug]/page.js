@@ -4,6 +4,7 @@ import PostCard from '@/components/PostCard';
 import Sidebar from '@/components/Sidebar';
 import { posts, categories, getPostsByCategory, getRecentPosts } from '@/data/posts';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import styles from './page.module.css';
 
 export async function generateStaticParams() {
@@ -13,7 +14,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-    const category = categories.find(c => c.slug === params.slug);
+    const { slug } = await params;
+    const category = categories.find(c => c.slug === slug);
     if (!category) return { title: 'Category Not Found' };
 
     return {
@@ -22,14 +24,15 @@ export async function generateMetadata({ params }) {
     };
 }
 
-export default function CategoryPage({ params }) {
-    const category = categories.find(c => c.slug === params.slug);
+export default async function CategoryPage({ params }) {
+    const { slug } = await params;
+    const category = categories.find(c => c.slug === slug);
 
     if (!category) {
         notFound();
     }
 
-    const categoryPosts = getPostsByCategory(params.slug);
+    const categoryPosts = getPostsByCategory(slug);
     const sidebarCategories = categories.slice(0, 6);
     const recentPosts = getRecentPosts(4).map(p => ({
         title: p.title,
@@ -46,9 +49,9 @@ export default function CategoryPage({ params }) {
                     {/* Page Header */}
                     <div className={styles.pageHeader}>
                         <div className={styles.breadcrumb}>
-                            <a href="/">হোম</a>
+                            <Link href="/">হোম</Link>
                             <span>/</span>
-                            <a href="/categories">বিভাগসমূহ</a>
+                            <Link href="/categories">বিভাগসমূহ</Link>
                             <span>/</span>
                             <span>{category.name}</span>
                         </div>

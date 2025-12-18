@@ -3,6 +3,7 @@ import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar';
 import { posts, categories, getPostBySlug, getRecentPosts } from '@/data/posts';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import styles from './page.module.css';
 
 export async function generateStaticParams() {
@@ -12,17 +13,19 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-    const post = getPostBySlug(params.slug);
+    const { slug } = await params;
+    const post = getPostBySlug(slug);
     if (!post) return { title: 'Post Not Found' };
 
     return {
-        title: `${post.title} | মারকাযুল ইমান`,
+        title: `${post.title} | মুফতি আনিসুর রহমান`,
         description: post.excerpt,
     };
 }
 
-export default function PostPage({ params }) {
-    const post = getPostBySlug(params.slug);
+export default async function PostPage({ params }) {
+    const { slug } = await params;
+    const post = getPostBySlug(slug);
 
     if (!post) {
         notFound();
@@ -43,9 +46,9 @@ export default function PostPage({ params }) {
                 <article className={styles.article}>
                     <div className="container">
                         <div className={styles.breadcrumb}>
-                            <a href="/">হোম</a>
+                            <Link href="/">হোম</Link>
                             <span>/</span>
-                            <a href="/posts">প্রবন্ধ</a>
+                            <Link href="/posts">প্রবন্ধ</Link>
                             <span>/</span>
                             <span>{post.category}</span>
                         </div>
@@ -54,9 +57,9 @@ export default function PostPage({ params }) {
                             <div className={styles.postContent}>
                                 <header className={styles.postHeader}>
                                     <div className={styles.postMeta}>
-                                        <a href={`/category/${post.categorySlug}`} className="tag">
+                                        <Link href={`/category/${post.categorySlug}`} className="tag">
                                             {post.category}
-                                        </a>
+                                        </Link>
                                         <span className={styles.date}>
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
