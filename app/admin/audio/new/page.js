@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../../admin.module.css';
 import { createClient } from '@/lib/supabase-browser';
@@ -8,6 +8,9 @@ import { createClient } from '@/lib/supabase-browser';
 export default function NewAudioPage() {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const fileInputRef = useRef(null);
     const [formData, setFormData] = useState({
         title: '',
         slug: '',
@@ -46,8 +49,74 @@ export default function NewAudioPage() {
         });
     };
 
+    const handleFileUpload = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        // Validate file type
+        const validTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/m4a', 'audio/x-m4a'];
+        if (!validTypes.includes(file.type)) {
+            alert('অনুগ্রহ করে একটি অডিও ফাইল নির্বাচন করুন (MP3, WAV, M4A)');
+            return;
+        }
+
+        // Validate file size (max 50MB)
+        if (file.size > 50 * 1024 * 1024) {
+            alert('ফাইলের আকার ৫০ MB এর বেশি হতে পারবে না');
+            return;
+        }
+
+        setUploading(true);
+        setUploadProgress(10);
+
+        const supabase = createClient();
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${formData.slug || 'audio'}.${fileExt}`;
+
+        setUploadProgress(30);
+
+        const { data, error } = await supabase.storage
+            .from('audio')
+            .upload(fileName, file, {
+                cacheControl: '3600',
+                upsert: false
+            });
+
+        setUploadProgress(80);
+
+        if (error) {
+            console.error('Upload error:', error);
+            alert('আপলোড ত্রুটি: ' + error.message);
+            setUploading(false);
+            setUploadProgress(0);
+            return;
+        }
+
+        // Get public URL
+        const { data: urlData } = supabase.storage
+            .from('audio')
+            .getPublicUrl(fileName);
+
+        setFormData({
+            ...formData,
+            file_url: urlData.publicUrl
+        });
+
+        setUploadProgress(100);
+        setTimeout(() => {
+            setUploading(false);
+            setUploadProgress(0);
+        }, 500);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!formData.file_url) {
+            alert('অনুগ্রহ করে একটি অডিও ফাইল আপলোড করুন বা URL দিন');
+            return;
+        }
+
         setLoading(true);
 
         const supabase = createClient();
@@ -125,19 +194,58 @@ export default function NewAudioPage() {
                         </div>
                     </div>
 
-                    {/* File URL */}
+                    {/* File Upload */}
                     <div className={styles.formGroup}>
-                        <label>অডিও ফাইল URL *</label>
+                        <label>অডিও ফাইল আপলোড করুন *</label>
+                        <div className={styles.uploadArea}>
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="audio/*"
+                                onChange={handleFileUpload}
+                                style={{ display: 'none' }}
+                            />
+                            <button
+                                type="button"
+                                className={styles.uploadBtn}
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={uploading}
+                            >
+                                {uploading ? (
+                                    <>আপলোড হচ্ছে... {uploadProgress}%</>
+                                ) : (
+                                    <>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="17 8 12 3 7 8"></polyline>
+                                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                                        </svg>
+                                        ফাইল নির্বাচন করুন
+                                    </>
+                                )}
+                            </button>
+                            {uploading && (
+                                <div className={styles.progressBar}>
+                                    <div className={styles.progressFill} style={{ width: `${uploadProgress}%` }}></div>
+                                </div>
+                            )}
+                        </div>
+                        {formData.file_url && (
+                            <div className={styles.uploadedFile}>
+                                ✓ আপলোড সম্পন্ন: <a href={formData.file_url} target="_blank" rel="noopener">ফাইল দেখুন</a>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Or enter URL manually */}
+                    <div className={styles.formGroup}>
+                        <label>অথবা সরাসরি URL দিন</label>
                         <input
                             type="url"
                             value={formData.file_url}
                             onChange={(e) => setFormData({ ...formData, file_url: e.target.value })}
                             placeholder="https://example.com/audio.mp3"
-                            required
                         />
-                        <small style={{ color: '#666', marginTop: '0.25rem', display: 'block' }}>
-                            অডিও ফাইলের সরাসরি লিংক দিন (MP3/M4A)
-                        </small>
                     </div>
 
                     {/* Description */}
@@ -153,7 +261,7 @@ export default function NewAudioPage() {
                 </div>
 
                 <div className={styles.formActions}>
-                    <button type="submit" className={styles.submitBtn} disabled={loading}>
+                    <button type="submit" className={styles.submitBtn} disabled={loading || uploading}>
                         {loading ? 'সেভ হচ্ছে...' : 'সেভ করুন'}
                     </button>
                     <button
