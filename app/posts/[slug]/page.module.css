@@ -1,5 +1,6 @@
 .main {
-    padding-top: calc(var(--header-height) + var(--space-2xl));
+    padding-top: calc(var(--header-height) + var(--space-lg));
+    padding-bottom: var(--space-xl);
     min-height: 100vh;
 }
 
@@ -9,7 +10,7 @@
     gap: var(--space-sm);
     font-size: var(--fs-sm);
     color: var(--color-text-muted);
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-md);
 }
 
 .breadcrumb a {
@@ -23,8 +24,9 @@
 
 .contentGrid {
     display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: var(--space-2xl);
+    grid-template-columns: 1fr 320px;
+    gap: var(--space-xl);
+    align-items: start;
 }
 
 .postContent {
@@ -35,7 +37,7 @@
 }
 
 .postHeader {
-    padding: var(--space-2xl);
+    padding: var(--space-lg);
     border-bottom: 1px solid var(--color-border-light);
 }
 
@@ -43,7 +45,7 @@
     display: flex;
     align-items: center;
     gap: var(--space-md);
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
     flex-wrap: wrap;
 }
 
@@ -51,135 +53,137 @@
 .readTime {
     display: flex;
     align-items: center;
-    gap: var(--space-xs);
-    font-size: var(--fs-sm);
+    gap: 4px;
+    font-size: var(--fs-xs);
     color: var(--color-text-muted);
 }
 
 .postTitle {
-    font-size: var(--fs-3xl);
+    font-size: var(--fs-2xl);
     color: var(--color-text-primary);
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-sm);
     line-height: 1.3;
 }
 
 .postExcerpt {
-    font-size: var(--fs-md);
+    font-size: var(--fs-base);
     color: var(--color-text-secondary);
-    line-height: 1.8;
+    line-height: 1.7;
 }
 
 /* Audio Player */
 .audioPlayer {
     display: flex;
     align-items: center;
-    gap: var(--space-lg);
-    margin: var(--space-lg) var(--space-2xl);
-    padding: var(--space-lg);
+    gap: var(--space-md);
+    margin: var(--space-md) var(--space-lg);
+    padding: var(--space-md);
     background: rgba(13, 74, 74, 0.05);
-    border-radius: var(--radius-lg);
-    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-primary);
 }
 
 .audioIcon {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--color-primary);
     color: var(--color-text-light);
     border-radius: 50%;
+    flex-shrink: 0;
 }
 
 .audioLabel {
     font-weight: 600;
+    font-size: var(--fs-sm);
     color: var(--color-text-primary);
     display: block;
 }
 
 .audioNote {
-    font-size: var(--fs-sm);
+    font-size: var(--fs-xs);
     color: var(--color-text-muted);
 }
 
 /* Post Body */
 .postBody {
-    padding: var(--space-2xl);
+    padding: var(--space-lg);
     font-family: var(--font-bengali);
-    font-size: var(--fs-md);
-    line-height: 2;
+    font-size: var(--fs-base);
+    line-height: 1.8;
     color: var(--color-text-secondary);
 }
 
 .postBody h2 {
-    font-size: var(--fs-xl);
-    color: var(--color-primary);
-    margin: var(--space-xl) 0 var(--space-md);
-}
-
-.postBody h3 {
     font-size: var(--fs-lg);
-    color: var(--color-text-primary);
+    color: var(--color-primary);
     margin: var(--space-lg) 0 var(--space-sm);
 }
 
+.postBody h3 {
+    font-size: var(--fs-md);
+    color: var(--color-text-primary);
+    margin: var(--space-md) 0 var(--space-xs);
+}
+
 .postBody p {
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-sm);
 }
 
 .postBody ul,
 .postBody ol {
-    margin: var(--space-md) 0;
-    padding-left: var(--space-xl);
+    margin: var(--space-sm) 0;
+    padding-left: var(--space-lg);
 }
 
 .postBody li {
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-xs);
 }
 
 .postBody blockquote {
-    border-left: 4px solid var(--color-accent);
-    padding-left: var(--space-lg);
-    margin: var(--space-lg) 0;
+    border-left: 3px solid var(--color-accent);
+    padding-left: var(--space-md);
+    margin: var(--space-md) 0;
     font-style: italic;
     color: var(--color-text-muted);
 }
 
 /* Post Footer */
 .postFooter {
-    padding: var(--space-xl) var(--space-2xl);
+    padding: var(--space-md) var(--space-lg);
     border-top: 1px solid var(--color-border-light);
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: var(--space-lg);
+    gap: var(--space-md);
 }
 
 .tags {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: var(--space-xs);
     flex-wrap: wrap;
 }
 
 .tagsLabel,
 .shareLabel {
-    font-size: var(--fs-sm);
+    font-size: var(--fs-xs);
     color: var(--color-text-muted);
-    margin-right: var(--space-xs);
+    margin-right: 4px;
 }
 
 .share {
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
+    gap: var(--space-xs);
 }
 
 .shareBtn {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -206,15 +210,15 @@
     .postHeader,
     .postBody,
     .postFooter {
-        padding: var(--space-lg);
+        padding: var(--space-md);
     }
 
     .audioPlayer {
-        margin: var(--space-md) var(--space-lg);
+        margin: var(--space-sm) var(--space-md);
     }
 
     .postTitle {
-        font-size: var(--fs-2xl);
+        font-size: var(--fs-xl);
     }
 
     .postFooter {

@@ -1,47 +1,57 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import PostCard from '@/components/PostCard';
 import Sidebar from '@/components/Sidebar';
-import { posts, categories, getRecentPosts } from '@/data/posts';
+import PostCard from '@/components/PostCard';
+import Link from 'next/link';
+import { getPosts, getCategories } from '@/lib/data';
+import { posts as staticPosts, categories as staticCategories } from '@/data/posts';
 import styles from './page.module.css';
 
+export const revalidate = 60;
+
 export const metadata = {
-    title: 'সকল প্রবন্ধ | মুফতি আনিসুর রহমান',
-    description: 'ইসলামী জ্ঞান ও দাওয়াহ সম্পর্কিত প্রবন্ধসমূহ পড়ুন।',
+    title: 'সব প্রবন্ধ | মুফতি আনিসুর রহমান',
+    description: 'ইসলামী জ্ঞান ও দাওয়াহ বিষয়ক প্রবন্ধসমূহ'
 };
 
-export default function PostsPage() {
-    const sidebarCategories = categories.slice(0, 6);
-    const recentPosts = getRecentPosts(4).map(p => ({
-        title: p.title,
-        slug: p.slug,
-        date: p.date,
-        hasAudio: p.hasAudio
-    }));
+export default async function PostsPage() {
+    let posts = await getPosts();
+    let categories = await getCategories();
+
+    // Fallback to static data
+    if (posts.length === 0) {
+        posts = staticPosts;
+    }
+    if (categories.length === 0) {
+        categories = staticCategories;
+    }
 
     return (
         <>
             <Header />
             <main className={styles.main}>
                 <div className="container">
-                    {/* Page Header */}
                     <div className={styles.pageHeader}>
-                        <h1 className={styles.pageTitle}>প্রবন্ধসমূহ</h1>
-                        <p className={styles.pageSubtitle}>
-                            ইসলামী জ্ঞান ও জীবনের পথনির্দেশ
-                        </p>
+                        <h1 className={styles.pageTitle}>সব প্রবন্ধ</h1>
+                        <p className={styles.pageSubtitle}>ইসলামী জ্ঞান ও জীবনের পথনির্দেশ</p>
                     </div>
 
                     <div className={styles.contentGrid}>
-                        {/* Posts Grid */}
                         <div className={styles.postsGrid}>
                             {posts.map((post) => (
                                 <PostCard key={post.id} post={post} />
                             ))}
                         </div>
 
-                        {/* Sidebar */}
-                        <Sidebar categories={sidebarCategories} recentPosts={recentPosts} />
+                        <Sidebar
+                            categories={categories.slice(0, 6)}
+                            recentPosts={posts.slice(0, 4).map(p => ({
+                                title: p.title,
+                                slug: p.slug,
+                                date: p.date,
+                                hasAudio: p.hasAudio
+                            }))}
+                        />
                     </div>
                 </div>
             </main>

@@ -1,103 +1,114 @@
 .postsSection {
   background: var(--color-bg-primary);
+  padding: var(--space-xl) 0;
+}
+
+.hadithSection {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  padding: var(--space-xl) 0;
 }
 
 .audioSection {
   background: var(--color-bg-secondary);
-}
-
-.categoriesSection {
-  background: linear-gradient(180deg, var(--color-bg-primary) 0%, rgba(13, 74, 74, 0.03) 100%);
+  padding: var(--space-xl) 0;
 }
 
 .sectionHeader {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: var(--space-2xl);
-  gap: var(--space-lg);
-}
-
-.sectionHeaderCenter {
-  text-align: center;
-  margin-bottom: var(--space-2xl);
+  margin-bottom: var(--space-lg);
+  gap: var(--space-md);
 }
 
 .sectionTitle {
-  font-size: var(--fs-2xl);
+  font-size: var(--fs-xl);
   color: var(--color-primary);
-  margin-bottom: var(--space-xs);
+  margin-bottom: 4px;
 }
 
 .sectionSubtitle {
-  font-size: var(--fs-base);
+  font-size: var(--fs-sm);
   color: var(--color-text-muted);
 }
 
 /* Content Grid with Sidebar */
 .contentGrid {
   display: grid;
-  grid-template-columns: 1fr 350px;
-  gap: var(--space-2xl);
+  grid-template-columns: 1fr 280px;
+  gap: var(--space-lg);
+  align-items: start;
 }
 
 .postsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-lg);
+  gap: var(--space-md);
+}
+
+/* Daily Hadith Section */
+.hadithCard {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hadithHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.hadithLabel {
+  background: var(--color-accent);
+  color: var(--color-primary-dark);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.hadithSource {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--fs-xs);
+}
+
+.hadithContent {
+  margin-bottom: var(--space-md);
+}
+
+.hadithArabic {
+  font-family: var(--font-arabic);
+  font-size: var(--fs-2xl);
+  color: var(--color-accent);
+  line-height: 1.8;
+  margin-bottom: var(--space-sm);
+}
+
+.hadithBangla {
+  font-size: var(--fs-base);
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.7;
+}
+
+.hadithFooter {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: var(--space-md);
+}
+
+.hadithNarrator {
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
 }
 
 /* Audio Grid */
 .audioGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-lg);
-}
-
-/* Categories Grid */
-.categoriesGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-lg);
-}
-
-.categoryCard {
-  background: var(--color-bg-card);
-  padding: var(--space-xl);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-  text-align: center;
-  transition: all var(--transition-base);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.categoryCard:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--color-primary);
-}
-
-.categoryName {
-  font-size: var(--fs-lg);
-  font-weight: 600;
-  color: var(--color-primary);
-}
-
-.categoryCount {
-  font-size: var(--fs-sm);
-  color: var(--color-accent-dark);
-  background: rgba(212, 168, 83, 0.1);
-  padding: 2px 10px;
-  border-radius: var(--radius-full);
-}
-
-.categoryDesc {
-  font-size: var(--fs-sm);
-  color: var(--color-text-muted);
-  margin-top: var(--space-sm);
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
 }
 
 /* Responsive */
@@ -106,17 +117,7 @@
     grid-template-columns: 1fr;
   }
 
-  .categoriesGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 1024px) {
-  .postsGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .categoriesGrid {
+  .audioGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -130,10 +131,17 @@
   .audioGrid {
     grid-template-columns: 1fr;
   }
-}
 
-@media (max-width: 480px) {
-  .categoriesGrid {
+  .postsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .hadithArabic {
+    font-size: var(--fs-xl);
+  }
+
+  .hadithHeader {
+    flex-direction: column;
+    gap: var(--space-xs);
   }
 }

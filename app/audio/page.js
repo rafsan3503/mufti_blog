@@ -1,54 +1,95 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AudioCard from '@/components/AudioCard';
-import { audioContent } from '@/data/audio';
-import { categories } from '@/data/posts';
 import styles from './page.module.css';
-
-export const metadata = {
-    title: 'অডিও লাইব্রেরি | মারকাযুল ইমান',
-    description: 'ইসলামী বয়ান, তিলাওয়াত এবং লেকচার শুনুন।',
-};
+import { createClient } from '@/lib/supabase-browser';
+import { audioContent as staticAudio } from '@/data/audio';
 
 export default function AudioPage() {
+    const [audioList, setAudioList] = useState([]);
+    const [filter, setFilter] = useState('all');
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchAudio();
+    }, []);
+
+    const fetchAudio = async () => {
+        const supabase = createClient();
+        const { data, error } = await supabase
+            .from('audio')
+            .select('*, categories(name, slug)')
+            .order('created_at', { ascending: false });
+
+        if (!error && data && data.length > 0) {
+            const formatted = data.map(audio => ({
+                id: audio.id,
+                slug: audio.slug,
+                title: audio.title,
+                description: audio.description,
+                src: audio.file_url,
+                duration: audio.duration || '',
+                category: audio.categories?.name || '',
+                categorySlug: audio.categories?.slug || ''
+            }));
+            setAudioList(formatted);
+        } else {
+            // Fallback to static data
+            setAudioList(staticAudio || []);
+        }
+        setLoading(false);
+    };
+
+    const filteredAudio = filter === 'all'
+        ? audioList
+        : audioList.filter(a => a.categorySlug === filter);
+
+    const uniqueCategories = [...new Set(audioList.map(a => a.category).filter(Boolean))];
+
     return (
         <>
             <Header />
             <main className={styles.main}>
                 <div className="container">
-                    {/* Page Header */}
                     <div className={styles.pageHeader}>
                         <h1 className={styles.pageTitle}>অডিও লাইব্রেরি</h1>
-                        <p className={styles.pageSubtitle}>
-                            ইসলামী বয়ান, কুরআন তিলাওয়াত এবং শিক্ষামূলক লেকচার শুনুন
-                        </p>
+                        <p className={styles.pageSubtitle}>ইসলামী বয়ান ও তিলাওয়াত শুনুন</p>
                     </div>
 
-                    {/* Category Filter */}
                     <div className={styles.filters}>
-                        <button className={`${styles.filterBtn} ${styles.active}`}>সব</button>
-                        {categories.slice(0, 6).map((cat, index) => (
-                            <button key={index} className={styles.filterBtn}>
-                                {cat.name}
+                        <button
+                            className={`${styles.filterBtn} ${filter === 'all' ? styles.active : ''}`}
+                            onClick={() => setFilter('all')}
+                        >
+                            সব
+                        </button>
+                        {uniqueCategories.map((cat, i) => (
+                            <button
+                                key={i}
+                                className={`${styles.filterBtn} ${filter === audioList.find(a => a.category === cat)?.categorySlug ? styles.active : ''}`}
+                                onClick={() => setFilter(audioList.find(a => a.category === cat)?.categorySlug || 'all')}
+                            >
+                                {cat}
                             </button>
                         ))}
                     </div>
 
-                    {/* Audio Grid */}
-                    <div className={styles.audioGrid}>
-                        {audioContent.map((audio) => (
-                            <AudioCard key={audio.id} audio={audio} />
-                        ))}
-                    </div>
+                    {loading ? (
+                        <div style={{ textAlign: 'center', padding: '2rem' }}>লোড হচ্ছে...</div>
+                    ) : (
+                        <div className={styles.audioGrid}>
+                            {filteredAudio.map((audio) => (
+                                <AudioCard key={audio.id} audio={audio} />
+                            ))}
+                        </div>
+                    )}
 
-                    {/* Empty State for Future */}
-                    {audioContent.length === 0 && (
-                        <div className={styles.emptyState}>
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
-                            </svg>
-                            <h3>কোন অডিও পাওয়া যায়নি</h3>
-                            <p>শীঘ্রই নতুন অডিও যোগ করা হবে।</p>
+                    {!loading && filteredAudio.length === 0 && (
+                        <div style={{ textAlign: 'center', padding: '2rem' }}>
+                            কোন অডিও পাওয়া যায়নি।
                         </div>
                     )}
                 </div>

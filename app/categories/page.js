@@ -1,51 +1,46 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { categories } from '@/data/posts';
-import styles from './page.module.css';
 import Link from 'next/link';
+import { getCategories } from '@/lib/data';
+import { categories as staticCategories } from '@/data/posts';
+import styles from './page.module.css';
+
+export const revalidate = 60;
 
 export const metadata = {
     title: 'বিভাগসমূহ | মুফতি আনিসুর রহমান',
-    description: 'বিষয়ভিত্তিক ইসলামী জ্ঞান অন্বেষণ করুন।',
+    description: 'ইসলামী বিষয়ভিত্তিক বিভাগসমূহ'
 };
 
-export default function CategoriesPage() {
+export default async function CategoriesPage() {
+    let categories = await getCategories();
+
+    if (categories.length === 0) {
+        categories = staticCategories;
+    }
+
     return (
         <>
             <Header />
             <main className={styles.main}>
                 <div className="container">
-                    {/* Page Header */}
                     <div className={styles.pageHeader}>
                         <h1 className={styles.pageTitle}>বিভাগসমূহ</h1>
-                        <p className={styles.pageSubtitle}>
-                            বিষয়ভিত্তিক ইসলামী জ্ঞান অন্বেষণ করুন
-                        </p>
+                        <p className={styles.pageSubtitle}>বিষয়ভিত্তিক ইসলামী জ্ঞান অন্বেষণ করুন</p>
                     </div>
 
-                    {/* Categories Grid */}
                     <div className={styles.categoriesGrid}>
                         {categories.map((category, index) => (
                             <Link
-                                key={index}
+                                key={category.id || index}
                                 href={`/category/${category.slug}`}
                                 className={styles.categoryCard}
                             >
-                                <div className={styles.categoryIcon}>
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                                    </svg>
-                                </div>
-                                <h3 className={styles.categoryName}>{category.name}</h3>
+                                <h2 className={styles.categoryName}>{category.name}</h2>
                                 <span className={styles.categoryCount}>{category.count} প্রবন্ধ</span>
-                                <p className={styles.categoryDesc}>{category.description}</p>
-                                <span className={styles.viewMore}>
-                                    দেখুন
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </span>
+                                {category.description && (
+                                    <p className={styles.categoryDesc}>{category.description}</p>
+                                )}
                             </Link>
                         ))}
                     </div>

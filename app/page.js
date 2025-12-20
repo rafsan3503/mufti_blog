@@ -4,14 +4,36 @@ import PostCard from '@/components/PostCard';
 import AudioCard from '@/components/AudioCard';
 import Sidebar from '@/components/Sidebar';
 import Footer from '@/components/Footer';
-import { posts, categories, getRecentPosts } from '@/data/posts';
-import { getRecentAudio } from '@/data/audio';
+import Link from 'next/link';
+import { getRecentPosts, getCategories, getRecentAudio } from '@/lib/data';
+import { getDailyHadith } from '@/data/hadith';
 import styles from './page.module.css';
 
-export default function Home() {
-  const recentPosts = getRecentPosts(4);
-  const recentAudio = getRecentAudio(4);
+// Static data fallback
+import { posts as staticPosts, categories as staticCategories } from '@/data/posts';
+import { audioContent as staticAudio } from '@/data/audio';
+
+export const revalidate = 60; // Revalidate every 60 seconds
+
+export default async function Home() {
+  // Try to fetch from Supabase, fallback to static data
+  let recentPosts = await getRecentPosts(6);
+  let categories = await getCategories();
+  let recentAudio = await getRecentAudio(3);
+
+  // Fallback to static data if Supabase returns empty
+  if (recentPosts.length === 0) {
+    recentPosts = staticPosts.slice(0, 6);
+  }
+  if (categories.length === 0) {
+    categories = staticCategories;
+  }
+  if (recentAudio.length === 0) {
+    recentAudio = staticAudio?.slice(0, 3) || [];
+  }
+
   const sidebarCategories = categories.slice(0, 6);
+  const dailyHadith = getDailyHadith();
 
   return (
     <>
@@ -20,14 +42,14 @@ export default function Home() {
         <Hero />
 
         {/* Posts Section */}
-        <section className={`section ${styles.postsSection}`}>
+        <section className={styles.postsSection}>
           <div className="container">
             <div className={styles.sectionHeader}>
               <div>
                 <h2 className={styles.sectionTitle}>সাম্প্রতিক প্রবন্ধ</h2>
                 <p className={styles.sectionSubtitle}>ইসলামী জ্ঞান ও জীবনের পথনির্দেশ</p>
               </div>
-              <a href="/posts" className="btn btn-outline">সব দেখুন</a>
+              <Link href="/posts" className="btn btn-outline">সব দেখুন</Link>
             </div>
 
             <div className={styles.contentGrid}>
@@ -39,7 +61,7 @@ export default function Home() {
 
               <Sidebar
                 categories={sidebarCategories}
-                recentPosts={posts.slice(0, 4).map(p => ({
+                recentPosts={recentPosts.slice(0, 4).map(p => ({
                   title: p.title,
                   slug: p.slug,
                   date: p.date,
@@ -50,44 +72,39 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Daily Hadith Section */}
+        <section className={styles.hadithSection}>
+          <div className="container">
+            <div className={styles.hadithCard}>
+              <div className={styles.hadithHeader}>
+                <span className={styles.hadithLabel}>আজকের হাদীস</span>
+                <span className={styles.hadithSource}>{dailyHadith.source}</span>
+              </div>
+              <div className={styles.hadithContent}>
+                <p className={styles.hadithArabic}>{dailyHadith.arabic}</p>
+                <p className={styles.hadithBangla}>{dailyHadith.bangla}</p>
+              </div>
+              <div className={styles.hadithFooter}>
+                <span className={styles.hadithNarrator}>— {dailyHadith.narrator}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Audio Section */}
-        <section className={`section ${styles.audioSection}`}>
+        <section className={styles.audioSection}>
           <div className="container">
             <div className={styles.sectionHeader}>
               <div>
                 <h2 className={styles.sectionTitle}>অডিও লেকচার</h2>
                 <p className={styles.sectionSubtitle}>শুনুন ইসলামী বয়ান ও তিলাওয়াত</p>
               </div>
-              <a href="/audio" className="btn btn-primary">সব অডিও</a>
+              <Link href="/audio" className="btn btn-primary">সব অডিও</Link>
             </div>
 
             <div className={styles.audioGrid}>
               {recentAudio.map((audio) => (
                 <AudioCard key={audio.id} audio={audio} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Categories Section */}
-        <section className={`section ${styles.categoriesSection}`}>
-          <div className="container">
-            <div className={styles.sectionHeaderCenter}>
-              <h2 className={styles.sectionTitle}>বিভাগসমূহ</h2>
-              <p className={styles.sectionSubtitle}>বিষয়ভিত্তিক ইসলামী জ্ঞান অন্বেষণ করুন</p>
-            </div>
-
-            <div className={styles.categoriesGrid}>
-              {categories.map((category, index) => (
-                <a
-                  key={index}
-                  href={`/category/${category.slug}`}
-                  className={styles.categoryCard}
-                >
-                  <span className={styles.categoryName}>{category.name}</span>
-                  <span className={styles.categoryCount}>{category.count} প্রবন্ধ</span>
-                  <p className={styles.categoryDesc}>{category.description}</p>
-                </a>
               ))}
             </div>
           </div>
