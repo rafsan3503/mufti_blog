@@ -10,7 +10,12 @@ export default function NewAudioPage() {
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
+    const [showNewCategory, setShowNewCategory] = useState(false);
+    const [newCategoryName, setNewCategoryName] = useState('');
+    const [savingCategory, setSavingCategory] = useState(false);
     const fileInputRef = useRef(null);
+    const audioRef = useRef(null);
+
     const [formData, setFormData] = useState({
         title: '',
         slug: '',
@@ -49,44 +54,70 @@ export default function NewAudioPage() {
         });
     };
 
+    // Format duration from seconds to MM:SS
+    const formatDuration = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
+
+    // Get audio duration from file
+    const getAudioDuration = (file) => {
+        return new Promise((resolve) => {
+            const audio = new Audio();
+            audio.onloadedmetadata = () => {
+                resolve(audio.duration);
+                URL.revokeObjectURL(audio.src);
+            };
+            audio.onerror = () => {
+                resolve(0);
+                URL.revokeObjectURL(audio.src);
+            };
+            audio.src = URL.createObjectURL(file);
+        });
+    };
+
     const handleFileUpload = async (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
         // Validate file type
-        const validTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/m4a', 'audio/x-m4a'];
-        if (!validTypes.includes(file.type)) {
-            alert('অনুগ্রহ করে একটি অডিও ফাইল নির্বাচন করুন (MP3, WAV, M4A)');
+        const validTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/m4a', 'audio/x-m4a', 'audio/ogg'];
+        if (!validTypes.includes(file.type) && !file.name.match(/\.(mp3|wav|m4a|ogg)$/i)) {
             return;
         }
 
-        // Validate file size (max 50MB)
-        if (file.size > 50 * 1024 * 1024) {
-            alert('ফাইলের আকার ৫০ MB এর বেশি হতে পারবে না');
+        // Validate file size (max 100MB)
+        if (file.size > 100 * 1024 * 1024) {
             return;
         }
 
         setUploading(true);
         setUploadProgress(10);
 
-        const supabase = createClient();
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}-${formData.slug || 'audio'}.${fileExt}`;
+        // Get duration before upload
+        const durationSeconds = await getAudioDuration(file);
+        const formattedDuration = formatDuration(durationSeconds);
 
         setUploadProgress(30);
+
+        const supabase = createClient();
+        const fileExt = file.name.split('.').pop();
+        // More unique filename with random string
+        const uniqueId = Math.random().toString(36).substring(2, 10);
+        const fileName = `${Date.now()}-${uniqueId}.${fileExt}`;
 
         const { data, error } = await supabase.storage
             .from('audio')
             .upload(fileName, file, {
                 cacheControl: '3600',
-                upsert: false
+                upsert: true // Allow overwrite if exists
             });
 
         setUploadProgress(80);
 
         if (error) {
             console.error('Upload error:', error);
-            alert('আপলোড ত্রুটি: ' + error.message);
             setUploading(false);
             setUploadProgress(0);
             return;
@@ -99,7 +130,8 @@ export default function NewAudioPage() {
 
         setFormData({
             ...formData,
-            file_url: urlData.publicUrl
+            file_url: urlData.publicUrl,
+            duration: formattedDuration
         });
 
         setUploadProgress(100);
@@ -109,11 +141,38 @@ export default function NewAudioPage() {
         }, 500);
     };
 
+    // Add new category inline
+    const handleAddCategory = async () => {
+        if (!newCategoryName.trim()) return;
+
+        setSavingCategory(true);
+        const supabase = createClient();
+
+        const slug = newCategoryName
+            .toLowerCase()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .trim();
+
+        const { data, error } = await supabase
+            .from('categories')
+            .insert([{ name: newCategoryName, slug }])
+            .select()
+            .single();
+
+        if (!error && data) {
+            setCategories([...categories, data]);
+            setFormData({ ...formData, category_id: data.id });
+            setNewCategoryName('');
+            setShowNewCategory(false);
+        }
+        setSavingCategory(false);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!formData.file_url) {
-            alert('অনুগ্রহ করে একটি অডিও ফাইল আপলোড করুন বা URL দিন');
             return;
         }
 
@@ -129,7 +188,6 @@ export default function NewAudioPage() {
         const { error } = await supabase.from('audio').insert([audioData]);
 
         if (error) {
-            alert('ত্রুটি: ' + error.message);
             setLoading(false);
             return;
         }
@@ -148,55 +206,89 @@ export default function NewAudioPage() {
                 <div className={styles.formGrid}>
                     {/* Title */}
                     <div className={styles.formGroup}>
-                        <label>শিরোনাম *</label>
+                        <label className={styles.label}>
+                            শিরোনাম <span className={styles.required}>*</span>
+                        </label>
                         <input
                             type="text"
                             value={formData.title}
                             onChange={handleTitleChange}
                             placeholder="অডিওর শিরোনাম"
+                            className={styles.input}
                             required
                         />
                     </div>
 
                     {/* Slug */}
                     <div className={styles.formGroup}>
-                        <label>স্লাগ (URL)</label>
+                        <label className={styles.label}>স্লাগ (URL)</label>
                         <input
                             type="text"
                             value={formData.slug}
                             onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                             placeholder="url-slug"
+                            className={styles.input}
                         />
                     </div>
 
-                    {/* Category & Duration */}
-                    <div className={styles.formRow}>
-                        <div className={styles.formGroup}>
-                            <label>বিভাগ</label>
-                            <select
-                                value={formData.category_id}
-                                onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-                            >
-                                <option value="">বিভাগ নির্বাচন করুন</option>
-                                {categories.map((cat) => (
-                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label>সময়কাল</label>
-                            <input
-                                type="text"
-                                value={formData.duration}
-                                onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                                placeholder="১৫:৩০"
-                            />
-                        </div>
+                    {/* Category */}
+                    <div className={styles.formGroup}>
+                        <label className={styles.label}>বিভাগ</label>
+                        {showNewCategory ? (
+                            <div className={styles.inlineAdd}>
+                                <input
+                                    type="text"
+                                    value={newCategoryName}
+                                    onChange={(e) => setNewCategoryName(e.target.value)}
+                                    placeholder="নতুন বিভাগের নাম"
+                                    className={styles.input}
+                                    autoFocus
+                                />
+                                <button
+                                    type="button"
+                                    onClick={handleAddCategory}
+                                    disabled={savingCategory}
+                                    className={styles.inlineAddBtn}
+                                >
+                                    {savingCategory ? '...' : '✓'}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowNewCategory(false)}
+                                    className={styles.inlineCancelBtn}
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        ) : (
+                            <div className={styles.selectWithAdd}>
+                                <select
+                                    value={formData.category_id}
+                                    onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
+                                    className={styles.select}
+                                >
+                                    <option value="">বিভাগ নির্বাচন করুন</option>
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                    ))}
+                                </select>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowNewCategory(true)}
+                                    className={styles.addNewBtn}
+                                    title="নতুন বিভাগ যোগ করুন"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     {/* File Upload */}
                     <div className={styles.formGroup}>
-                        <label>অডিও ফাইল আপলোড করুন *</label>
+                        <label className={styles.label}>
+                            অডিও ফাইল <span className={styles.required}>*</span>
+                        </label>
                         <div className={styles.uploadArea}>
                             <input
                                 ref={fileInputRef}
@@ -232,36 +324,43 @@ export default function NewAudioPage() {
                         </div>
                         {formData.file_url && (
                             <div className={styles.uploadedFile}>
-                                ✓ আপলোড সম্পন্ন: <a href={formData.file_url} target="_blank" rel="noopener">ফাইল দেখুন</a>
+                                ✓ আপলোড সম্পন্ন
+                                <audio
+                                    controls
+                                    src={formData.file_url}
+                                    style={{ marginTop: '0.5rem', width: '100%' }}
+                                />
                             </div>
                         )}
                     </div>
 
-                    {/* Or enter URL manually */}
+                    {/* Duration - Auto-detected */}
                     <div className={styles.formGroup}>
-                        <label>অথবা সরাসরি URL দিন</label>
-                        <input
-                            type="url"
-                            value={formData.file_url}
-                            onChange={(e) => setFormData({ ...formData, file_url: e.target.value })}
-                            placeholder="https://example.com/audio.mp3"
-                        />
+                        <label className={styles.label}>
+                            সময়কাল
+                            {formData.duration && <span className={styles.autoTag}>স্বয়ংক্রিয়</span>}
+                        </label>
+                        <div className={styles.readTimeDisplay}>
+                            <span className={styles.readTimeValue}>{formData.duration || '--:--'}</span>
+                            <span className={styles.readTimeUnit}>মিনিট</span>
+                        </div>
                     </div>
 
                     {/* Description */}
                     <div className={styles.formGroup}>
-                        <label>বিবরণ</label>
+                        <label className={styles.label}>বিবরণ</label>
                         <textarea
                             value={formData.description}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                             placeholder="অডিওর বিবরণ"
+                            className={styles.textarea}
                             rows={4}
                         />
                     </div>
                 </div>
 
                 <div className={styles.formActions}>
-                    <button type="submit" className={styles.submitBtn} disabled={loading || uploading}>
+                    <button type="submit" className={styles.submitBtn} disabled={loading || uploading || !formData.file_url}>
                         {loading ? 'সেভ হচ্ছে...' : 'সেভ করুন'}
                     </button>
                     <button

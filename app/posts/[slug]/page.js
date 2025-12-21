@@ -14,7 +14,7 @@ export async function generateMetadata({ params }) {
     if (!post) post = getStaticPost(slug);
 
     return {
-        title: post ? `${post.title} | মুফতি আনিসুর রহমান` : 'প্রবন্ধ পাওয়া যায়নি',
+        title: post ? `${post.title} | মুফতি আনিছুর রহমান` : 'প্রবন্ধ পাওয়া যায়নি',
         description: post?.excerpt || ''
     };
 }

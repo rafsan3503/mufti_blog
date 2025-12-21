@@ -17,7 +17,7 @@ export async function generateMetadata({ params }) {
     }
 
     return {
-        title: category ? `${category.name} | মুফতি আনিসুর রহমান` : 'বিভাগ পাওয়া যায়নি',
+        title: category ? `${category.name} | মুফতি আনিছুর রহমান` : 'বিভাগ পাওয়া যায়নি',
         description: category?.description || ''
     };
 }

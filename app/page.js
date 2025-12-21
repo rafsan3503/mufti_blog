@@ -5,7 +5,7 @@ import AudioCard from '@/components/AudioCard';
 import Sidebar from '@/components/Sidebar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import { getRecentPosts, getCategories, getRecentAudio } from '@/lib/data';
+import { getRecentPosts, getCategories, getRecentAudio, getStats } from '@/lib/data';
 import { getDailyHadith } from '@/data/hadith';
 import styles from './page.module.css';
 
@@ -20,6 +20,7 @@ export default async function Home() {
   let recentPosts = await getRecentPosts(6);
   let categories = await getCategories();
   let recentAudio = await getRecentAudio(3);
+  let stats = await getStats();
 
   // Fallback to static data if Supabase returns empty
   if (recentPosts.length === 0) {
@@ -39,7 +40,7 @@ export default async function Home() {
     <>
       <Header />
       <main>
-        <Hero />
+        <Hero stats={stats} />
 
         {/* Posts Section */}
         <section className={styles.postsSection}>

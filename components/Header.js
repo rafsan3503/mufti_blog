@@ -23,7 +23,7 @@ export default function Header() {
             <div className={`container ${styles.headerContent}`}>
                 <Link href="/" className={styles.logo}>
                     <span className={styles.logoArabic}>مفتی انیس الرحمٰن</span>
-                    <span className={styles.logoBangla}>মুফতি আনিসুর রহমান</span>
+                    <span className={styles.logoBangla}>মুফতি আনিছুর রহমান</span>
                 </Link>
                 <nav className={`${styles.nav} ${menuOpen ? styles.navOpen : ''}`}>
                     <Link

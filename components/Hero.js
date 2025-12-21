@@ -1,7 +1,13 @@
 import styles from './Hero.module.css';
 import Link from 'next/link';
 
-export default function Hero() {
+// Convert numbers to Bangla numerals
+function toBanglaNumber(num) {
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    return String(num).replace(/\d/g, (d) => banglaDigits[parseInt(d)]);
+}
+
+export default function Hero({ stats = { posts: 0, audio: 0, categories: 0 } }) {
     return (
         <section className={styles.hero}>
             <div className={styles.heroBg}>
@@ -12,7 +18,7 @@ export default function Hero() {
                 <div className={styles.arabicVerse}>
                     <span>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
                 </div>
-                <p className={styles.authorLabel}>মুফতি আনিসুর রহমান</p>
+                <p className={styles.authorLabel}>মুফতি আনিছুর রহমান</p>
                 <h1 className={styles.title}>
                     ইসলামী জ্ঞান ও দাওয়াহ
                 </h1>
@@ -36,17 +42,17 @@ export default function Hero() {
                 </div>
                 <div className={styles.stats}>
                     <div className={styles.stat}>
-                        <span className={styles.statNumber}>১২০+</span>
+                        <span className={styles.statNumber}>{toBanglaNumber(stats.posts)}+</span>
                         <span className={styles.statLabel}>প্রবন্ধ</span>
                     </div>
                     <div className={styles.statDivider}></div>
                     <div className={styles.stat}>
-                        <span className={styles.statNumber}>৫০+</span>
+                        <span className={styles.statNumber}>{toBanglaNumber(stats.audio)}+</span>
                         <span className={styles.statLabel}>অডিও</span>
                     </div>
                     <div className={styles.statDivider}></div>
                     <div className={styles.stat}>
-                        <span className={styles.statNumber}>১০</span>
+                        <span className={styles.statNumber}>{toBanglaNumber(stats.categories)}</span>
                         <span className={styles.statLabel}>বিভাগ</span>
                     </div>
                 </div>

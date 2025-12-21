@@ -10,7 +10,7 @@ import styles from './page.module.css';
 export const revalidate = 60;
 
 export const metadata = {
-    title: 'সব প্রবন্ধ | মুফতি আনিসুর রহমান',
+    title: 'সব প্রবন্ধ | মুফতি আনিছুর রহমান',
     description: 'ইসলামী জ্ঞান ও দাওয়াহ বিষয়ক প্রবন্ধসমূহ'
 };
 

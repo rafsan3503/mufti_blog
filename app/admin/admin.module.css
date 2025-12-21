@@ -297,6 +297,7 @@
 
 .actionBtn.secondary:hover {
     background: #e0e0e0;
+    color: #333;
 }
 
 /* Posts/Audio List */

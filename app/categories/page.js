@@ -8,7 +8,7 @@ import styles from './page.module.css';
 export const revalidate = 60;
 
 export const metadata = {
-    title: 'বিভাগসমূহ | মুফতি আনিসুর রহমান',
+    title: 'বিভাগসমূহ | মুফতি আনিছুর রহমান',
     description: 'ইসলামী বিষয়ভিত্তিক বিভাগসমূহ'
 };
 

@@ -11,7 +11,7 @@ export default function Footer() {
                         <div className={styles.footerSection}>
                             <div className={styles.footerLogo}>
                                 <span className={styles.logoArabic}>مفتی انیس الرحمٰن</span>
-                                <span className={styles.logoBangla}>মুফতি আনিসুর রহমান</span>
+                                <span className={styles.logoBangla}>মুফতি আনিছুর রহমান</span>
                             </div>
                             <p className={styles.footerAbout}>
                                 কুরআন ও সুন্নাহর আলোকে ইসলামী জ্ঞান ও দাওয়াহ প্রচারে নিবেদিত। বাংলাদেশে ইসলামী শিক্ষার প্রসারে কাজ করছি।
@@ -79,7 +79,7 @@ export default function Footer() {
 
             <div className={styles.footerBottom}>
                 <div className="container">
-                    <p>© ২০২৪ মুফতি আনিসুর রহমান। সর্বস্বত্ব সংরক্ষিত।</p>
+                <p>© ২০২৫-২০২৬ মুফতি আনিছুর রহমান। সর্বস্বত্ব সংরক্ষিত।</p>
                 </div>
             </div>
         </footer>

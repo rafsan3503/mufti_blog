@@ -33,7 +33,7 @@ export default function LoginPage() {
             <div className={styles.loginCard}>
                 <div className={styles.loginLogo}>
                     <h1>অ্যাডমিন প্যানেল</h1>
-                    <p>মুফতি আনিসুর রহমান</p>
+                    <p>মুফতি আনিছুর রহমান</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.loginForm}>
