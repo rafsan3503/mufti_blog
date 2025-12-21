@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from '../admin.module.css';
+import Modal from '@/components/Modal';
 import { createClient } from '@/lib/supabase-browser';
 
 export default function AudioListPage() {
     const [audioList, setAudioList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [deleteModal, setDeleteModal] = useState({ open: false, id: null, title: '' });
 
     useEffect(() => {
         fetchAudio();
@@ -26,21 +28,24 @@ export default function AudioListPage() {
         setLoading(false);
     };
 
-    const handleDelete = async (id) => {
-        if (!confirm('আপনি কি নিশ্চিত এই অডিও মুছে ফেলতে চান?')) return;
+    const handleDeleteClick = (id, title) => {
+        setDeleteModal({ open: true, id, title });
+    };
 
+    const handleDeleteConfirm = async () => {
         const supabase = createClient();
-        const { error } = await supabase.from('audio').delete().eq('id', id);
+        const { error } = await supabase.from('audio').delete().eq('id', deleteModal.id);
 
         if (!error) {
-            setAudioList(audioList.filter(a => a.id !== id));
+            setAudioList(audioList.filter(a => a.id !== deleteModal.id));
         }
+        setDeleteModal({ open: false, id: null, title: '' });
     };
 
     const formatDate = (date) => {
         return new Date(date).toLocaleDateString('bn-BD', {
             year: 'numeric',
-            month: 'long',
+            month: 'short',
             day: 'numeric'
         });
     };
@@ -91,7 +96,10 @@ export default function AudioListPage() {
                                     <td>{formatDate(audio.created_at)}</td>
                                     <td>
                                         <div className={styles.actions}>
-                                            <button onClick={() => handleDelete(audio.id)} className={styles.deleteBtn}>
+                                            <button
+                                                onClick={() => handleDeleteClick(audio.id, audio.title)}
+                                                className={styles.deleteBtn}
+                                            >
                                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                                     <polyline points="3 6 5 6 21 6"></polyline>
                                                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -105,6 +113,18 @@ export default function AudioListPage() {
                     </table>
                 )}
             </div>
+
+            {/* Delete Confirmation Modal */}
+            <Modal
+                isOpen={deleteModal.open}
+                onClose={() => setDeleteModal({ open: false, id: null, title: '' })}
+                onConfirm={handleDeleteConfirm}
+                type="danger"
+                title="অডিও মুছে ফেলুন"
+                message={`আপনি কি "${deleteModal.title}" অডিওটি মুছে ফেলতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।`}
+                confirmText="মুছে ফেলুন"
+                cancelText="বাতিল"
+            />
         </div>
     );
 }

@@ -1,0 +1,206 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal {
+    background: white;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modalHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1.5rem 0.75rem;
+    text-align: center;
+}
+
+.iconDanger,
+.iconConfirm,
+.iconAlert {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+}
+
+.iconDanger {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.iconConfirm {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.iconAlert {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.modalBody {
+    padding: 0.75rem 1.5rem 1.5rem;
+}
+
+.message {
+    text-align: center;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.modalFooter {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0 1.5rem 1.5rem;
+}
+
+.cancelBtn,
+.confirmBtn {
+    flex: 1;
+    padding: 0.875rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancelBtn {
+    background: #f3f4f6;
+    color: #4b5563;
+    border: none;
+}
+
+.cancelBtn:hover {
+    background: #e5e7eb;
+}
+
+.confirmBtn {
+    background: #0d4a4a;
+    color: white;
+    border: none;
+}
+
+.confirmBtn:hover {
+    background: #083535;
+}
+
+.confirmBtn.danger {
+    background: #dc2626;
+}
+
+.confirmBtn.danger:hover {
+    background: #b91c1c;
+}
+
+/* Upload Area */
+.uploadArea {
+    margin-top: 0.5rem;
+}
+
+.uploadLabel {
+    cursor: pointer;
+}
+
+.uploadBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem;
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    transition: all 0.2s;
+    color: #6b7280;
+}
+
+.uploadBox:hover {
+    border-color: #0d4a4a;
+    background: #f8fafa;
+    color: #0d4a4a;
+}
+
+.uploadBox span {
+    font-weight: 500;
+}
+
+.uploadBox small {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .modal {
+        max-width: 100%;
+        margin: 0.5rem;
+    }
+
+    .modalHeader {
+        padding: 1.25rem 1.25rem 0.5rem;
+    }
+
+    .modalBody {
+        padding: 0.5rem 1.25rem 1.25rem;
+    }
+
+    .modalFooter {
+        flex-direction: column-reverse;
+        padding: 0 1.25rem 1.25rem;
+    }
+
+    .iconDanger,
+    .iconConfirm,
+    .iconAlert {
+        width: 48px;
+        height: 48px;
+    }
+}

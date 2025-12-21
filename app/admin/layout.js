@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase-browser';
 export default function AdminLayout({ children }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [menuOpen, setMenuOpen] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
 
@@ -24,6 +25,11 @@ export default function AdminLayout({ children }) {
         };
         checkAuth();
     }, [pathname, router]);
+
+    // Close menu on route change
+    useEffect(() => {
+        setMenuOpen(false);
+    }, [pathname]);
 
     const handleLogout = () => {
         localStorage.removeItem('admin_authenticated');
@@ -50,10 +56,38 @@ export default function AdminLayout({ children }) {
 
     return (
         <div className={styles.adminLayout}>
+            {/* Mobile Header */}
+            <header className={styles.mobileHeader}>
+                <button
+                    className={styles.menuToggle}
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    aria-label="Toggle menu"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <h1 className={styles.mobileTitle}>অ্যাডমিন</h1>
+            </header>
+
+            {/* Overlay */}
+            {menuOpen && (
+                <div
+                    className={styles.overlay}
+                    onClick={() => setMenuOpen(false)}
+                />
+            )}
+
             {/* Sidebar */}
-            <aside className={styles.sidebar}>
+            <aside className={`${styles.sidebar} ${menuOpen ? styles.sidebarOpen : ''}`}>
                 <div className={styles.sidebarHeader}>
                     <h2 className={styles.sidebarLogo}>অ্যাডমিন</h2>
+                    <button
+                        className={styles.closeSidebar}
+                        onClick={() => setMenuOpen(false)}
+                    >
+                        ✕
+                    </button>
                 </div>
                 <nav className={styles.sidebarNav}>
                     <Link
