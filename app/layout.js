@@ -1,6 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
+  metadataBase: new URL('https://muftianisurrahman.site'),
   title: "মুফতি আনিছুর রহমান | Mufti Anisur Rahman",
   description: "ইসলামী দাওয়াহ ও শিক্ষামূলক ব্লগ - বাংলাদেশ। কুরআন ও সুন্নাহর আলোকে জীবন গঠনের পথনির্দেশ।",
   keywords: "মুফতি আনিছুর রহমান, ইসলাম, দাওয়াহ, বাংলাদেশ, Islamic, Dawah, Mufti Anisur Rahman",
@@ -10,6 +11,8 @@ export const metadata = {
     description: "ইসলামী দাওয়াহ ও শিক্ষামূলক ব্লগ",
     type: "website",
     locale: "bn_BD",
+    url: "https://muftianisurrahman.site",
+    siteName: "মুফতি আনিছুর রহমান",
   },
 };
 

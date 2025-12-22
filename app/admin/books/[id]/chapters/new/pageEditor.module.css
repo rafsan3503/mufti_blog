@@ -1,0 +1,124 @@
+.pageNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.pageInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pageLabel {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.pageTabs {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.pageTab {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pageTab:hover {
+  border-color: #0d4a4a;
+  color: #0d4a4a;
+}
+
+.pageTab.active {
+  background: #0d4a4a;
+  border-color: #0d4a4a;
+  color: white;
+}
+
+.pageActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.addPageBtn {
+  padding: 0.5rem 1rem;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.addPageBtn:hover {
+  background: #15803d;
+}
+
+.deletePageBtn {
+  padding: 0.5rem 1rem;
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.deletePageBtn:hover {
+  background: #fecaca;
+}
+
+.pageHint {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pageNav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pageInfo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pageActions {
+    justify-content: flex-end;
+  }
+
+  .pageTab {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+}

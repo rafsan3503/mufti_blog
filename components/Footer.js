@@ -49,7 +49,7 @@ export default function Footer() {
                                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                                         <polyline points="22,6 12,13 2,6"></polyline>
                                     </svg>
-                                    <span>contact@mufti-anis.com</span>
+                                    <span>contact@muftianisurrahman.site</span>
                                 </div>
                                 <div className={styles.contactItem}>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -79,7 +79,7 @@ export default function Footer() {
 
             <div className={styles.footerBottom}>
                 <div className="container">
-                <p>© ২০২৫-২০২৬ মুফতি আনিছুর রহমান। সর্বস্বত্ব সংরক্ষিত।</p>
+                    <p>© ২০২৫-২০২৬ মুফতি আনিছুর রহমান। সর্বস্বত্ব সংরক্ষিত।</p>
                 </div>
             </div>
         </footer>
