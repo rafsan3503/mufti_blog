@@ -7,7 +7,7 @@ function toBanglaNumber(num) {
     return String(num).replace(/\d/g, (d) => banglaDigits[parseInt(d)]);
 }
 
-export default function Hero({ stats = { posts: 0, audio: 0, categories: 0 } }) {
+export default function Hero({ stats = { posts: 0, audio: 0, categories: 0, books: 0 } }) {
     return (
         <section className={styles.hero}>
             <div className={styles.heroBg}>
@@ -33,7 +33,14 @@ export default function Hero({ stats = { posts: 0, audio: 0, categories: 0 } }) 
                         </svg>
                         প্রবন্ধ পড়ুন
                     </Link>
-                    <Link href="/audio" className="btn btn-outline" style={{ borderColor: 'white', color: 'white' }}>
+                    <Link href="/books" className="btn btn-outline" style={{ borderColor: 'rgba(255,255,255,0.6)', color: 'white' }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                        বই পড়ুন
+                    </Link>
+                    <Link href="/audio" className="btn btn-outline" style={{ borderColor: 'rgba(255,255,255,0.6)', color: 'white' }}>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <polygon points="5 3 19 12 5 21 5 3"></polygon>
                         </svg>
@@ -44,6 +51,11 @@ export default function Hero({ stats = { posts: 0, audio: 0, categories: 0 } }) 
                     <div className={styles.stat}>
                         <span className={styles.statNumber}>{toBanglaNumber(stats.posts)}+</span>
                         <span className={styles.statLabel}>প্রবন্ধ</span>
+                    </div>
+                    <div className={styles.statDivider}></div>
+                    <div className={styles.stat}>
+                        <span className={styles.statNumber}>{toBanglaNumber(stats.books)}</span>
+                        <span className={styles.statLabel}>বই</span>
                     </div>
                     <div className={styles.statDivider}></div>
                     <div className={styles.stat}>
