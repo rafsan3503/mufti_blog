@@ -31,7 +31,7 @@ export default function Sidebar({ categories, recentPosts }) {
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
-                    সাম্প্রতিক প্রবন্ধ
+                    সাম্প্রতিক ব্লগ
                 </h3>
                 <div className={styles.recentPosts}>
                     {recentPosts.map((post, index) => (

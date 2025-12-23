@@ -14,11 +14,11 @@ const fonts = [
     { id: 'hind', name: 'Hind Siliguri', family: '"Hind Siliguri", sans-serif' }
 ];
 
-// Themes
+// Themes with better contrast
 const themes = [
-    { id: 'light', name: 'লাইট', bg: '#ffffff', text: '#222222' },
-    { id: 'sepia', name: 'সেপিয়া', bg: '#f4ecd8', text: '#5b4636' },
-    { id: 'dark', name: 'ডার্ক', bg: '#1a1a2e', text: '#e8e8e8' }
+    { id: 'light', name: 'লাইট', bg: '#ffffff', text: '#222222', secondary: '#666666' },
+    { id: 'sepia', name: 'সেপিয়া', bg: '#f4ecd8', text: '#5b4636', secondary: '#7a6451' },
+    { id: 'dark', name: 'ডার্ক', bg: '#1a1a2e', text: '#f0f0f0', secondary: '#b0b0b0' }
 ];
 
 export default function ChapterReaderPage() {
@@ -149,10 +149,16 @@ export default function ChapterReaderPage() {
     const goToPrevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         } else if (chapter && chapter.chapter_number > 1) {
             window.location.href = `/books/${params.slug}/chapter/${chapter.chapter_number - 1}`;
         }
     };
+
+    // Scroll to top on page change
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [currentPage]);
 
     // Keyboard navigation
     useEffect(() => {
@@ -204,6 +210,13 @@ export default function ChapterReaderPage() {
         >
             {/* Header */}
             <header className={styles.header}>
+                <Link href="/" className={styles.iconBtn} title="হোমপেজ">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </Link>
+
                 <button className={styles.iconBtn} onClick={() => setShowToc(!showToc)} title="সূচিপত্র">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -323,13 +336,17 @@ export default function ChapterReaderPage() {
             {/* Content */}
             <article
                 className={`${styles.content} ${styles[fontSize]}`}
-                style={{ fontFamily: currentFont.family }}
+                style={{
+                    fontFamily: currentFont.family,
+                    color: currentTheme.text
+                }}
             >
                 {currentPage === 1 && (
-                    <h1 className={styles.chapterTitle}>{chapter.title}</h1>
+                    <h1 className={styles.chapterTitle} style={{ color: currentTheme.text }}>{chapter.title}</h1>
                 )}
                 <div
                     className={styles.chapterContent}
+                    style={{ color: currentTheme.text }}
                     dangerouslySetInnerHTML={{ __html: pages[currentPage - 1] || '' }}
                 />
             </article>

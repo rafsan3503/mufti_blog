@@ -5,7 +5,7 @@ import AudioCard from '@/components/AudioCard';
 import Sidebar from '@/components/Sidebar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import { getRecentPosts, getCategories, getRecentAudio, getStats } from '@/lib/data';
+import { getRecentPosts, getCategories, getRecentAudio, getStats, getRecentBooks } from '@/lib/data';
 import { getDailyHadith } from '@/data/hadith';
 import styles from './page.module.css';
 
@@ -21,6 +21,7 @@ export default async function Home() {
   let categories = await getCategories();
   let recentAudio = await getRecentAudio(3);
   let stats = await getStats();
+  let recentBooks = await getRecentBooks(3);
 
   // Fallback to static data if Supabase returns empty
   if (recentPosts.length === 0) {
@@ -47,7 +48,7 @@ export default async function Home() {
           <div className="container">
             <div className={styles.sectionHeader}>
               <div>
-                <h2 className={styles.sectionTitle}>সাম্প্রতিক প্রবন্ধ</h2>
+                <h2 className={styles.sectionTitle}>সাম্প্রতিক ব্লগ</h2>
                 <p className={styles.sectionSubtitle}>ইসলামী জ্ঞান ও জীবনের পথনির্দেশ</p>
               </div>
               <Link href="/posts" className="btn btn-outline">সব দেখুন</Link>
@@ -73,6 +74,58 @@ export default async function Home() {
           </div>
         </section>
 
+        {/* Section Divider */}
+        <div className={styles.sectionDivider}>
+          <span className={styles.dividerIcon}>✦</span>
+        </div>
+
+        {/* Books Section */}
+        {recentBooks.length > 0 && (
+          <section className={styles.booksSection}>
+            <div className="container">
+              <div className={styles.sectionHeader}>
+                <div>
+                  <h2 className={styles.sectionTitle}>📚 বইসমূহ</h2>
+                  <p className={styles.sectionSubtitle}>অনলাইনে পড়ুন ইসলামী বই</p>
+                </div>
+                <Link href="/books" className="btn btn-primary">সব বই দেখুন</Link>
+              </div>
+
+              <div className={styles.booksGrid}>
+                {recentBooks.map((book) => (
+                  <Link key={book.id} href={`/books/${book.slug}`} className={styles.bookCard}>
+                    <div className={styles.bookCover}>
+                      {book.coverImage ? (
+                        <img src={book.coverImage} alt={book.title} />
+                      ) : (
+                        <div className={styles.bookPlaceholder}>📖</div>
+                      )}
+                    </div>
+                    <div className={styles.bookInfo}>
+                      <h3>{book.title}</h3>
+                      <p>{book.author}</p>
+                      {book.viewCount > 0 && (
+                        <span className={styles.bookViewCount}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          {book.viewCount}
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Section Divider */}
+        <div className={styles.sectionDivider}>
+          <span className={styles.dividerIcon}>✦</span>
+        </div>
+
         {/* Daily Hadith Section */}
         <section className={styles.hadithSection}>
           <div className="container">
@@ -91,6 +144,11 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        {/* Section Divider */}
+        <div className={styles.sectionDivider}>
+          <span className={styles.dividerIcon}>✦</span>
+        </div>
 
         {/* Audio Section */}
         <section className={styles.audioSection}>
@@ -115,3 +173,4 @@ export default async function Home() {
     </>
   );
 }
+

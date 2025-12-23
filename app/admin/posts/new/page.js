@@ -141,8 +141,8 @@ export default function NewPostPage() {
     return (
         <div className={styles.formPage}>
             <div className={styles.pageHeader}>
-                <h1 className={styles.pageTitle}>নতুন প্রবন্ধ</h1>
-                <p className={styles.pageSubtitle}>নতুন প্রবন্ধ তৈরি করুন</p>
+                <h1 className={styles.pageTitle}>নতুন ব্লগ</h1>
+                <p className={styles.pageSubtitle}>নতুন ব্লগ তৈরি করুন</p>
             </div>
 
             <form onSubmit={handleSubmit} className={styles.formCard}>
@@ -156,7 +156,7 @@ export default function NewPostPage() {
                             type="text"
                             value={formData.title}
                             onChange={handleTitleChange}
-                            placeholder="প্রবন্ধের শিরোনাম লিখুন"
+                            placeholder="ব্লগের শিরোনাম লিখুন"
                             className={styles.input}
                             required
                         />

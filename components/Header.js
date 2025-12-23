@@ -38,7 +38,7 @@ export default function Header() {
                         className={`${styles.navLink} ${isActive('/posts') ? styles.active : ''}`}
                         onClick={() => setMenuOpen(false)}
                     >
-                        প্রবন্ধ
+                        ব্লগ
                     </Link>
                     <Link
                         href="/books"

@@ -193,7 +193,7 @@
 }
 
 .loginBtn:hover {
-    background: #083535;
+    background: #d4a853; color: #1a1a1a;
 }
 
 .loginBtn:disabled {
@@ -287,7 +287,7 @@
 }
 
 .actionBtn:hover {
-    background: #083535;
+    background: #d4a853; color: #1a1a1a;
 }
 
 .actionBtn.secondary {
@@ -326,7 +326,7 @@
 }
 
 .addBtn:hover {
-    background: #083535;
+    background: #d4a853; color: #1a1a1a;
 }
 
 .listTable {
@@ -447,7 +447,7 @@
 }
 
 .addNewBtn:hover {
-    background: #083535;
+    background: #d4a853; color: #1a1a1a;
 }
 
 /* Inline Add */
@@ -564,7 +564,7 @@
 }
 
 .submitBtn:hover {
-    background: #083535;
+    background: #d4a853; color: #1a1a1a;
 }
 
 .cancelBtn {

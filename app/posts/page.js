@@ -10,8 +10,8 @@ import styles from './page.module.css';
 export const revalidate = 60;
 
 export const metadata = {
-    title: 'সব প্রবন্ধ | মুফতি আনিছুর রহমান',
-    description: 'ইসলামী জ্ঞান ও দাওয়াহ বিষয়ক প্রবন্ধসমূহ'
+    title: 'সব ব্লগ | মুফতি আনিছুর রহমান',
+    description: 'ইসলামী জ্ঞান ও দাওয়াহ বিষয়ক ব্লগসমূহ'
 };
 
 export default async function PostsPage() {
@@ -32,7 +32,7 @@ export default async function PostsPage() {
             <main className={styles.main}>
                 <div className="container">
                     <div className={styles.pageHeader}>
-                        <h1 className={styles.pageTitle}>সব প্রবন্ধ</h1>
+                        <h1 className={styles.pageTitle}>সব ব্লগ</h1>
                         <p className={styles.pageSubtitle}>ইসলামী জ্ঞান ও জীবনের পথনির্দেশ</p>
                     </div>
 

@@ -1,5 +1,6 @@
 import styles from './Footer.module.css';
 import Link from 'next/link';
+import SocialLinks from './SocialLinks';
 
 export default function Footer() {
     return (
@@ -23,20 +24,20 @@ export default function Footer() {
                             <h4 className={styles.footerTitle}>দ্রুত লিংক</h4>
                             <ul className={styles.footerLinks}>
                                 <li><Link href="/">হোম</Link></li>
-                                <li><Link href="/posts">প্রবন্ধসমূহ</Link></li>
+                                <li><Link href="/posts">ব্লগসমূহ</Link></li>
+                                <li><Link href="/books">বইসমূহ</Link></li>
                                 <li><Link href="/audio">অডিও</Link></li>
                                 <li><Link href="/categories">বিভাগসমূহ</Link></li>
                             </ul>
                         </div>
 
-                        {/* Categories */}
+                        {/* Resources - removed static categories */}
                         <div className={styles.footerSection}>
-                            <h4 className={styles.footerTitle}>জনপ্রিয় বিভাগ</h4>
+                            <h4 className={styles.footerTitle}>রিসোর্স</h4>
                             <ul className={styles.footerLinks}>
-                                <li><Link href="/category/tafsir">তাফসীর</Link></li>
-                                <li><Link href="/category/hadith">হাদীস</Link></li>
-                                <li><Link href="/category/fiqh">ফিকহ</Link></li>
-                                <li><Link href="/category/aqeedah">আকীদাহ</Link></li>
+                                <li><Link href="/books">বইসমূহ</Link></li>
+                                <li><Link href="/audio">অডিও লেকচার</Link></li>
+                                <li><Link href="/categories">সব বিভাগ</Link></li>
                             </ul>
                         </div>
 
@@ -59,19 +60,7 @@ export default function Footer() {
                                     <span>বাংলাদেশ</span>
                                 </div>
                             </div>
-                            <div className={styles.socialLinks}>
-                                <a href="#" className={styles.socialLink} aria-label="Facebook">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                                    </svg>
-                                </a>
-                                <a href="#" className={styles.socialLink} aria-label="YouTube">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
-                                        <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
-                                    </svg>
-                                </a>
-                            </div>
+                            <SocialLinks />
                         </div>
                     </div>
                 </div>

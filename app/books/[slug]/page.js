@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ViewTracker from '@/components/ViewTracker';
 import { getBookBySlug } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import styles from './book.module.css';
@@ -32,6 +33,7 @@ export default async function BookDetailPage({ params }) {
     return (
         <>
             <Header />
+            <ViewTracker type="book" id={book.id} />
             <main className={styles.bookPage}>
                 <div className="container">
                     <div className={styles.bookDetail}>
@@ -65,11 +67,20 @@ export default async function BookDetailPage({ params }) {
                             <div className={styles.meta}>
                                 <span>{book.totalChapters} টি অধ্যায়</span>
                                 {book.price && <span>মূল্য: {book.price}</span>}
+                                {book.viewCount > 0 && (
+                                    <span className={styles.viewCount}>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        {book.viewCount} বার দেখা হয়েছে
+                                    </span>
+                                )}
                             </div>
 
                             {book.chapters.length > 0 && (
                                 <Link
-                                    href={`/books/${book.slug}/read`}
+                                    href={`/books/${book.slug}/chapter/1`}
                                     className={styles.readBtn}
                                 >
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

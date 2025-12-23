@@ -65,22 +65,35 @@
 /* Empty State */
 .emptyState {
     text-align: center;
-    padding: var(--space-3xl);
-    color: var(--color-text-muted);
+    padding: var(--space-3xl) var(--space-xl);
+    color: var(--color-text-secondary);
+    background: linear-gradient(135deg, rgba(13, 74, 74, 0.03) 0%, rgba(212, 168, 83, 0.05) 100%);
+    border-radius: var(--radius-xl);
+    margin: var(--space-2xl) 0;
 }
 
-.emptyState svg {
+.emptyIcon {
+    font-size: 4rem;
     margin-bottom: var(--space-lg);
-    opacity: 0.3;
+    opacity: 0.6;
 }
 
 .emptyState h3 {
-    font-size: var(--fs-lg);
+    font-size: var(--fs-xl);
+    color: var(--color-primary);
     margin-bottom: var(--space-sm);
+    font-weight: 600;
 }
 
 .emptyState p {
-    font-size: var(--fs-sm);
+    font-size: var(--fs-base);
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.emptyAction {
+    margin-top: var(--space-xl);
 }
 
 /* Responsive */

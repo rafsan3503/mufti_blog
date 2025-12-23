@@ -1,4 +1,6 @@
 import "./globals.css";
+import { AudioPlayerProvider } from "@/components/AudioPlayer";
+import { ToastProvider } from "@/components/Toast";
 
 export const metadata = {
   metadataBase: new URL('https://muftianisurrahman.site'),
@@ -20,7 +22,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="bn" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        {children}
+        <ToastProvider>
+          <AudioPlayerProvider>
+            {children}
+          </AudioPlayerProvider>
+        </ToastProvider>
       </body>
     </html>
   );

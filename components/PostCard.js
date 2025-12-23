@@ -39,8 +39,17 @@ export default function PostCard({ post }) {
                             <circle cx="12" cy="12" r="10"></circle>
                             <polyline points="12 6 12 12 16 14"></polyline>
                         </svg>
-                        {post.readTime} মিনিট
+                        {post.readTime} মি.
                     </span>
+                    {post.viewCount > 0 && (
+                        <span className={styles.viewCount}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            {post.viewCount}
+                        </span>
+                    )}
                 </div>
                 <div className={styles.tags}>
                     {post.tags && post.tags.slice(0, 2).map((tag, index) => (
@@ -53,3 +62,4 @@ export default function PostCard({ post }) {
         </article>
     );
 }
+

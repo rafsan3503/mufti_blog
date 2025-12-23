@@ -61,15 +61,15 @@ export default function PostsListPage() {
         <div className={styles.listPage}>
             <div className={styles.listHeader}>
                 <div className={styles.pageHeader}>
-                    <h1 className={styles.pageTitle}>প্রবন্ধ</h1>
-                    <p className={styles.pageSubtitle}>সব প্রবন্ধ পরিচালনা করুন</p>
+                    <h1 className={styles.pageTitle}>ব্লগ</h1>
+                    <p className={styles.pageSubtitle}>সব ব্লগ পরিচালনা করুন</p>
                 </div>
                 <Link href="/admin/posts/new" className={styles.addBtn}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
-                    নতুন প্রবন্ধ
+                    নতুন ব্লগ
                 </Link>
             </div>
 
@@ -78,9 +78,9 @@ export default function PostsListPage() {
                     <div style={{ padding: '2rem', textAlign: 'center' }}>লোড হচ্ছে...</div>
                 ) : posts.length === 0 ? (
                     <div style={{ padding: '2rem', textAlign: 'center' }}>
-                        <p>কোন প্রবন্ধ নেই।</p>
+                        <p>কোন ব্লগ নেই।</p>
                         <Link href="/admin/posts/new" style={{ color: '#0d4a4a', marginTop: '0.5rem', display: 'inline-block' }}>
-                            প্রথম প্রবন্ধ তৈরি করুন →
+                            প্রথম ব্লগ তৈরি করুন →
                         </Link>
                     </div>
                 ) : (
@@ -133,8 +133,8 @@ export default function PostsListPage() {
                 onClose={() => setDeleteModal({ open: false, id: null, title: '' })}
                 onConfirm={handleDeleteConfirm}
                 type="danger"
-                title="প্রবন্ধ মুছে ফেলুন"
-                message={`আপনি কি "${deleteModal.title}" প্রবন্ধটি মুছে ফেলতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।`}
+                title="ব্লগ মুছে ফেলুন"
+                message={`আপনি কি "${deleteModal.title}" ব্লগটি মুছে ফেলতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।`}
                 confirmText="মুছে ফেলুন"
                 cancelText="বাতিল"
             />

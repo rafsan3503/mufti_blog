@@ -195,7 +195,7 @@ export default function CategoriesPage() {
                 onConfirm={handleDeleteConfirm}
                 type="danger"
                 title="বিভাগ মুছে ফেলুন"
-                message={`আপনি কি "${deleteModal.name}" বিভাগটি মুছে ফেলতে চান? এই বিভাগের সব প্রবন্ধ বিভাগহীন হয়ে যাবে।`}
+                message={`আপনি কি "${deleteModal.name}" বিভাগটি মুছে ফেলতে চান? এই বিভাগের সব ব্লগ বিভাগহীন হয়ে যাবে।`}
                 confirmText="মুছে ফেলুন"
                 cancelText="বাতিল"
             />

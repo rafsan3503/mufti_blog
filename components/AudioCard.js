@@ -1,45 +1,30 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import styles from './AudioCard.module.css';
+import { useAudioPlayer } from './AudioPlayer';
 
 export default function AudioCard({ audio }) {
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [progress, setProgress] = useState(0);
-    const audioRef = useRef(null);
+    const { currentAudio, isPlaying, play, pause } = useAudioPlayer();
+    const isCurrentPlaying = currentAudio?.src === audio.src && isPlaying;
 
     const togglePlay = () => {
-        if (audioRef.current) {
-            if (isPlaying) {
-                audioRef.current.pause();
-            } else {
-                audioRef.current.play();
-            }
-            setIsPlaying(!isPlaying);
+        if (isCurrentPlaying) {
+            pause();
+        } else {
+            play(audio);
         }
-    };
-
-    const handleTimeUpdate = () => {
-        if (audioRef.current) {
-            const progress = (audioRef.current.currentTime / audioRef.current.duration) * 100;
-            setProgress(progress);
-        }
-    };
-
-    const handleEnded = () => {
-        setIsPlaying(false);
-        setProgress(0);
     };
 
     return (
         <div className={styles.card}>
             <div className={styles.cardContent}>
                 <button
-                    className={`${styles.playButton} ${isPlaying ? styles.playing : ''}`}
+                    className={`${styles.playButton} ${isCurrentPlaying ? styles.playing : ''}`}
                     onClick={togglePlay}
-                    aria-label={isPlaying ? 'বিরতি' : 'চালান'}
+                    aria-label={isCurrentPlaying ? 'বিরতি' : 'চালান'}
                 >
-                    {isPlaying ? (
+                    {isCurrentPlaying ? (
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                             <rect x="6" y="4" width="4" height="16" rx="1" />
                             <rect x="14" y="4" width="4" height="16" rx="1" />
@@ -66,17 +51,12 @@ export default function AudioCard({ audio }) {
                 </div>
             </div>
             <div className={styles.progressBar}>
-                <div className={styles.progress} style={{ width: `${progress}%` }}></div>
+                <div
+                    className={styles.progress}
+                    style={{ width: currentAudio?.src === audio.src ? '100%' : '0' }}
+                ></div>
             </div>
-            {audio.src && (
-                <audio
-                    ref={audioRef}
-                    src={audio.src}
-                    onTimeUpdate={handleTimeUpdate}
-                    onEnded={handleEnded}
-                    preload="metadata"
-                />
-            )}
         </div>
     );
 }
+

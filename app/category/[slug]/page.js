@@ -85,7 +85,7 @@ export default async function CategoryPage({ params }) {
                                     <PostCard key={post.id} post={post} />
                                 ))
                             ) : (
-                                <p>এই বিভাগে কোন প্রবন্ধ নেই।</p>
+                                <p>এই বিভাগে কোন ব্লগ নেই।</p>
                             )}
                         </div>
 

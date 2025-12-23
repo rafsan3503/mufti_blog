@@ -111,6 +111,105 @@
   gap: var(--space-md);
 }
 
+/* Books Section */
+.booksSection {
+  background: var(--color-bg-primary);
+  padding: var(--space-xl) 0;
+}
+
+.booksGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+.bookCard {
+  background: white;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.bookCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.bookCover {
+  aspect-ratio: 3/4;
+  background: linear-gradient(135deg, #0d4a4a 0%, #1a6b6b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.bookCover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bookPlaceholder {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.bookInfo {
+  padding: var(--space-md);
+}
+
+.bookInfo h3 {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.bookInfo p {
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+/* Section Divider */
+.sectionDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) 0;
+  background: linear-gradient(to right, transparent, rgba(13, 74, 74, 0.1), transparent);
+}
+
+.sectionDivider::before,
+.sectionDivider::after {
+  content: '';
+  flex: 1;
+  max-width: 200px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212, 168, 83, 0.4), transparent);
+}
+
+.dividerIcon {
+  color: var(--color-accent);
+  font-size: 1.25rem;
+  padding: 0 var(--space-md);
+  opacity: 0.7;
+}
+
+/* Book View Count */
+.bookViewCount {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
   .contentGrid {
@@ -118,6 +217,10 @@
   }
 
   .audioGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .booksGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -136,6 +239,11 @@
     grid-template-columns: 1fr;
   }
 
+  .booksGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+
   .hadithArabic {
     font-size: var(--fs-xl);
   }
@@ -143,5 +251,10 @@
   .hadithHeader {
     flex-direction: column;
     gap: var(--space-xs);
+  }
+
+  .sectionDivider::before,
+  .sectionDivider::after {
+    max-width: 100px;
   }
 }

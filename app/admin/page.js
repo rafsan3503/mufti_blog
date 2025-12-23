@@ -52,7 +52,7 @@ export default function AdminDashboard() {
             <div className={styles.statsGrid}>
                 <div className={styles.statCard}>
                     <h3>{loading ? '...' : stats.posts}</h3>
-                    <p>মোট প্রবন্ধ</p>
+                    <p>মোট ব্লগ</p>
                 </div>
                 <div className={styles.statCard}>
                     <h3>{loading ? '...' : stats.audio}</h3>
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
                             <line x1="12" y1="5" x2="12" y2="19"></line>
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                         </svg>
-                        নতুন প্রবন্ধ
+                        নতুন ব্লগ
                     </Link>
                     <Link href="/admin/audio/new" className={styles.actionBtn}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

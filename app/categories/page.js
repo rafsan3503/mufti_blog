@@ -37,7 +37,7 @@ export default async function CategoriesPage() {
                                 className={styles.categoryCard}
                             >
                                 <h2 className={styles.categoryName}>{category.name}</h2>
-                                <span className={styles.categoryCount}>{category.count} প্রবন্ধ</span>
+                                <span className={styles.categoryCount}>{category.count} ব্লগ</span>
                                 {category.description && (
                                     <p className={styles.categoryDesc}>{category.description}</p>
                                 )}

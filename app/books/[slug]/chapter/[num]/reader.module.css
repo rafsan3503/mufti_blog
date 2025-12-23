@@ -298,9 +298,9 @@
 /* Content */
 .content {
     flex: 1;
-    max-width: 700px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 5rem 1.5rem 6rem;
+    padding: 5rem 3rem 6rem;
     width: 100%;
 }
 
@@ -314,10 +314,25 @@
 
 .chapterContent {
     line-height: 2;
+    color: inherit;
+    font-family: inherit;
 }
 
 .chapterContent p {
     margin-bottom: 1.5rem;
+    color: inherit;
+}
+
+.chapterContent h2 {
+    font-size: 1.4rem;
+    margin: 2rem 0 1rem;
+    color: inherit;
+}
+
+.chapterContent h3 {
+    font-size: 1.2rem;
+    margin: 1.5rem 0 0.75rem;
+    color: inherit;
 }
 
 .chapterContent h2 {
@@ -347,23 +362,27 @@
 
 /* Font Sizes */
 .content.small {
-    font-size: 0.95rem;
-}
-
-.content.small .chapterTitle {
-    font-size: 1.5rem;
-}
-
-.content.medium {
     font-size: 1.1rem;
 }
 
-.content.large {
+.content.small .chapterTitle {
+    font-size: 1.75rem;
+}
+
+.content.medium {
     font-size: 1.25rem;
 }
 
-.content.large .chapterTitle {
+.content.medium .chapterTitle {
     font-size: 2rem;
+}
+
+.content.large {
+    font-size: 1.45rem;
+}
+
+.content.large .chapterTitle {
+    font-size: 2.25rem;
 }
 
 /* Navigation */

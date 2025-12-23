@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar';
+import ViewTracker from '@/components/ViewTracker';
 import Link from 'next/link';
 import { getPostBySlug, getCategories, getRecentPosts, getAllPostSlugs } from '@/lib/data';
 import { getPostBySlug as getStaticPost, categories as staticCategories, posts as staticPosts } from '@/data/posts';
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }) {
     if (!post) post = getStaticPost(slug);
 
     return {
-        title: post ? `${post.title} | মুফতি আনিছুর রহমান` : 'প্রবন্ধ পাওয়া যায়নি',
+        title: post ? `${post.title} | মুফতি আনিছুর রহমান` : 'ব্লগ পাওয়া যায়নি',
         description: post?.excerpt || ''
     };
 }
@@ -37,10 +38,10 @@ export default async function PostPage({ params }) {
                 <Header />
                 <main className={styles.main}>
                     <div className="container" style={{ textAlign: 'center', padding: '4rem 0' }}>
-                        <h1>প্রবন্ধ পাওয়া যায়নি</h1>
-                        <p>দুঃখিত, এই প্রবন্ধটি খুঁজে পাওয়া যায়নি।</p>
+                        <h1>ব্লগ পাওয়া যায়নি</h1>
+                        <p>দুঃখিত, এই ব্লগটি খুঁজে পাওয়া যায়নি।</p>
                         <Link href="/posts" className="btn btn-primary" style={{ marginTop: '1rem' }}>
-                            সব প্রবন্ধ দেখুন
+                            সব ব্লগ দেখুন
                         </Link>
                     </div>
                 </main>
@@ -52,12 +53,13 @@ export default async function PostPage({ params }) {
     return (
         <>
             <Header />
+            <ViewTracker type="post" id={post.id} />
             <main className={styles.main}>
                 <div className="container">
                     <nav className={styles.breadcrumb}>
                         <Link href="/">হোম</Link>
                         <span>/</span>
-                        <Link href="/posts">প্রবন্ধ</Link>
+                        <Link href="/posts">ব্লগ</Link>
                         <span>/</span>
                         <span>{post.title}</span>
                     </nav>
@@ -87,6 +89,15 @@ export default async function PostPage({ params }) {
                                         </svg>
                                         {post.readTime} মিনিট
                                     </span>
+                                    {post.viewCount !== undefined && (
+                                        <span className={styles.viewCount}>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                            {post.viewCount} বার পড়া হয়েছে
+                                        </span>
+                                    )}
                                 </div>
                                 <h1 className={styles.postTitle}>{post.title}</h1>
                                 {post.excerpt && <p className={styles.postExcerpt}>{post.excerpt}</p>}

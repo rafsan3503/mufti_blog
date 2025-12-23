@@ -189,4 +189,8 @@
         width: 100%;
         max-width: 250px;
     }
+
+    .scrollIndicator {
+        display: none;
+    }
 }

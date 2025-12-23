@@ -70,7 +70,7 @@ export default function EditPostPage({ params }) {
             .single();
 
         if (error || !data) {
-            alert('প্রবন্ধ পাওয়া যায়নি');
+            alert('ব্লগ পাওয়া যায়নি');
             router.push('/admin/posts');
             return;
         }
@@ -149,8 +149,8 @@ export default function EditPostPage({ params }) {
     return (
         <div className={styles.formPage}>
             <div className={styles.pageHeader}>
-                <h1 className={styles.pageTitle}>প্রবন্ধ সম্পাদনা</h1>
-                <p className={styles.pageSubtitle}>প্রবন্ধ আপডেট করুন</p>
+                <h1 className={styles.pageTitle}>ব্লগ সম্পাদনা</h1>
+                <p className={styles.pageSubtitle}>ব্লগ আপডেট করুন</p>
             </div>
 
             <form onSubmit={handleSubmit} className={styles.formCard}>
@@ -164,7 +164,7 @@ export default function EditPostPage({ params }) {
                             type="text"
                             value={formData.title}
                             onChange={handleTitleChange}
-                            placeholder="প্রবন্ধের শিরোনাম"
+                            placeholder="ব্লগের শিরোনাম"
                             className={styles.input}
                             required
                         />
@@ -219,7 +219,7 @@ export default function EditPostPage({ params }) {
                         <textarea
                             value={formData.excerpt}
                             onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                            placeholder="প্রবন্ধের সংক্ষিপ্ত বিবরণ"
+                            placeholder="ব্লগের সংক্ষিপ্ত বিবরণ"
                             className={styles.textarea}
                             rows={3}
                         />
