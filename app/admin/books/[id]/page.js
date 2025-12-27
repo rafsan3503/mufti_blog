@@ -98,7 +98,24 @@ export default function EditBookPage({ params }) {
     };
 
     const generateSlug = (title) => {
-        return title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').trim();
+        // First try to extract English characters
+        const englishOnly = title
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '')
+            .trim();
+
+        // If we have some English characters, use them
+        if (englishOnly.length >= 3) {
+            return englishOnly;
+        }
+
+        // For Bangla/non-English titles, generate a unique slug with prefix
+        const timestamp = Date.now().toString(36);
+        const random = Math.random().toString(36).substring(2, 6);
+        return `book-${timestamp}-${random}`;
     };
 
     const handleTitleChange = (e) => {
@@ -206,6 +223,16 @@ export default function EditBookPage({ params }) {
                                 type="text"
                                 value={formData.title}
                                 onChange={handleTitleChange}
+                                onPaste={(e) => {
+                                    setTimeout(() => {
+                                        const title = e.target.value;
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            title,
+                                            slug: generateSlug(title)
+                                        }));
+                                    }, 0);
+                                }}
                                 className={styles.input}
                                 required
                             />

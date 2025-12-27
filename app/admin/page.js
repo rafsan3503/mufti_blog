@@ -39,6 +39,11 @@ export default function AdminDashboard() {
         };
 
         fetchStats();
+
+        // Refetch when window regains focus
+        const handleFocus = () => fetchStats();
+        window.addEventListener('focus', handleFocus);
+        return () => window.removeEventListener('focus', handleFocus);
     }, []);
 
     return (

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../admin.module.css';
 import Modal from '@/components/Modal';
@@ -10,9 +11,16 @@ export default function PostsListPage() {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [deleteModal, setDeleteModal] = useState({ open: false, id: null, title: '' });
+    const router = useRouter();
 
+    // Refetch data when component mounts or when window regains focus
     useEffect(() => {
         fetchPosts();
+
+        // Refetch when window regains focus
+        const handleFocus = () => fetchPosts();
+        window.addEventListener('focus', handleFocus);
+        return () => window.removeEventListener('focus', handleFocus);
     }, []);
 
     const fetchPosts = async () => {

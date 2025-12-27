@@ -9,7 +9,7 @@ export const metadata = {
     description: 'মুফতি আনিছুর রহমানের সকল বই পড়ুন।'
 };
 
-export const revalidate = 60;
+export const revalidate = 0; // No cache - always fetch fresh data
 
 export default async function BooksPage() {
     const books = await getBooks();

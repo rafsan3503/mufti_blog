@@ -4,6 +4,7 @@ import PostCard from '@/components/PostCard';
 import AudioCard from '@/components/AudioCard';
 import Sidebar from '@/components/Sidebar';
 import Footer from '@/components/Footer';
+import RefreshOnMount from '@/components/RefreshOnMount';
 import Link from 'next/link';
 import { getRecentPosts, getCategories, getRecentAudio, getStats, getRecentBooks } from '@/lib/data';
 import { getDailyHadith } from '@/data/hadith';
@@ -13,7 +14,7 @@ import styles from './page.module.css';
 import { posts as staticPosts, categories as staticCategories } from '@/data/posts';
 import { audioContent as staticAudio } from '@/data/audio';
 
-export const revalidate = 60; // Revalidate every 60 seconds
+export const revalidate = 0; // No cache - always fetch fresh data
 
 export default async function Home() {
   // Try to fetch from Supabase, fallback to static data
@@ -39,6 +40,7 @@ export default async function Home() {
 
   return (
     <>
+      <RefreshOnMount />
       <Header />
       <main>
         <Hero stats={stats} />

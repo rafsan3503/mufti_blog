@@ -7,7 +7,7 @@ import { getPostBySlug, getCategories, getRecentPosts, getAllPostSlugs } from '@
 import { getPostBySlug as getStaticPost, categories as staticCategories, posts as staticPosts } from '@/data/posts';
 import styles from './page.module.css';
 
-export const revalidate = 60;
+export const revalidate = 0; // No cache - always fetch fresh data
 
 export async function generateMetadata({ params }) {
     const { slug } = await params;

@@ -35,6 +35,7 @@ export default function NewPostPage() {
     const [showNewCategory, setShowNewCategory] = useState(false);
     const [newCategoryName, setNewCategoryName] = useState('');
     const [savingCategory, setSavingCategory] = useState(false);
+    const [uploading, setUploading] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         slug: '',
@@ -43,7 +44,8 @@ export default function NewPostPage() {
         category_id: '',
         tags: '',
         status: 'draft',
-        read_time: 5
+        read_time: 5,
+        cover_image: ''
     });
     const router = useRouter();
 
@@ -58,12 +60,24 @@ export default function NewPostPage() {
     };
 
     const generateSlug = (title) => {
-        return title
+        // First try to extract English characters
+        const englishOnly = title
             .toLowerCase()
-            .replace(/[^\w\s-]/g, '')
+            .replace(/[^a-z0-9\s-]/g, '')
             .replace(/\s+/g, '-')
             .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '')
             .trim();
+
+        // If we have some English characters, use them
+        if (englishOnly.length >= 3) {
+            return englishOnly;
+        }
+
+        // For Bangla/non-English titles, generate a unique slug with prefix
+        const timestamp = Date.now().toString(36);
+        const random = Math.random().toString(36).substring(2, 6);
+        return `post-${timestamp}-${random}`;
     };
 
     const handleTitleChange = (e) => {
@@ -115,6 +129,27 @@ export default function NewPostPage() {
         setSavingCategory(false);
     };
 
+    const handleCoverUpload = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        if (!file.type.startsWith('image/')) return;
+
+        setUploading(true);
+        const supabase = createClient();
+        const fileExt = file.name.split('.').pop();
+        const fileName = `post-covers/${Date.now()}.${fileExt}`;
+
+        const { error } = await supabase.storage
+            .from('media')
+            .upload(fileName, file, { upsert: true });
+
+        if (!error) {
+            const { data: urlData } = supabase.storage.from('media').getPublicUrl(fileName);
+            setFormData({ ...formData, cover_image: urlData.publicUrl });
+        }
+        setUploading(false);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -135,6 +170,7 @@ export default function NewPostPage() {
             return;
         }
 
+        router.refresh(); // Refresh server data
         router.push('/admin/posts');
     };
 
@@ -156,6 +192,16 @@ export default function NewPostPage() {
                             type="text"
                             value={formData.title}
                             onChange={handleTitleChange}
+                            onPaste={(e) => {
+                                setTimeout(() => {
+                                    const title = e.target.value;
+                                    setFormData(prev => ({
+                                        ...prev,
+                                        title,
+                                        slug: generateSlug(title)
+                                    }));
+                                }, 0);
+                            }}
                             placeholder="ব্লগের শিরোনাম লিখুন"
                             className={styles.input}
                             required
@@ -175,6 +221,36 @@ export default function NewPostPage() {
                             />
                             <span className={styles.inputInfo}>/posts/{formData.slug || 'your-slug'}</span>
                         </div>
+                    </div>
+
+                    {/* Cover Image */}
+                    <div className={styles.formGroup}>
+                        <label className={styles.label}>কভার ইমেজ</label>
+                        <div className={styles.coverUpload}>
+                            {formData.cover_image ? (
+                                <div className={styles.coverPreview}>
+                                    <img src={formData.cover_image} alt="Cover" />
+                                    <button
+                                        type="button"
+                                        onClick={() => setFormData({ ...formData, cover_image: '' })}
+                                        className={styles.removeCover}
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            ) : (
+                                <label className={styles.uploadBtn}>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleCoverUpload}
+                                        style={{ display: 'none' }}
+                                    />
+                                    {uploading ? 'আপলোড হচ্ছে...' : '📷 কভার আপলোড করুন'}
+                                </label>
+                            )}
+                        </div>
+                        <span className={styles.inputHint}>কভার না দিলে ডিফল্ট ব্যবহার হবে</span>
                     </div>
 
                     {/* Category & Status */}

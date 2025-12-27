@@ -24,6 +24,7 @@ export default function EditPostPage({ params }) {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [uploading, setUploading] = useState(false);
     const [postId, setPostId] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
@@ -33,7 +34,8 @@ export default function EditPostPage({ params }) {
         category_id: '',
         tags: '',
         status: 'draft',
-        read_time: 5
+        read_time: 5,
+        cover_image: ''
     });
     const router = useRouter();
 
@@ -83,18 +85,31 @@ export default function EditPostPage({ params }) {
             category_id: data.category_id || '',
             tags: Array.isArray(data.tags) ? data.tags.join(', ') : '',
             status: data.status || 'draft',
-            read_time: data.read_time || 5
+            read_time: data.read_time || 5,
+            cover_image: data.cover_image || ''
         });
         setLoading(false);
     };
 
     const generateSlug = (title) => {
-        return title
+        // First try to extract English characters
+        const englishOnly = title
             .toLowerCase()
-            .replace(/[^\w\s-]/g, '')
+            .replace(/[^a-z0-9\s-]/g, '')
             .replace(/\s+/g, '-')
             .replace(/-+/g, '-')
+            .replace(/^-+|-+$/g, '')
             .trim();
+
+        // If we have some English characters, use them
+        if (englishOnly.length >= 3) {
+            return englishOnly;
+        }
+
+        // For Bangla/non-English titles, generate a unique slug with prefix
+        const timestamp = Date.now().toString(36);
+        const random = Math.random().toString(36).substring(2, 6);
+        return `post-${timestamp}-${random}`;
     };
 
     const handleTitleChange = (e) => {
@@ -104,6 +119,27 @@ export default function EditPostPage({ params }) {
             title,
             slug: generateSlug(title)
         });
+    };
+
+    const handleCoverUpload = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        if (!file.type.startsWith('image/')) return;
+
+        setUploading(true);
+        const supabase = createClient();
+        const fileExt = file.name.split('.').pop();
+        const fileName = `post-covers/${Date.now()}.${fileExt}`;
+
+        const { error } = await supabase.storage
+            .from('media')
+            .upload(fileName, file, { upsert: true });
+
+        if (!error) {
+            const { data: urlData } = supabase.storage.from('media').getPublicUrl(fileName);
+            setFormData({ ...formData, cover_image: urlData.publicUrl });
+        }
+        setUploading(false);
     };
 
     const handleSubmit = async (e) => {
@@ -121,6 +157,7 @@ export default function EditPostPage({ params }) {
             tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : [],
             status: formData.status,
             read_time: parseInt(formData.read_time) || 5,
+            cover_image: formData.cover_image || null,
             updated_at: new Date().toISOString()
         };
 
@@ -135,6 +172,7 @@ export default function EditPostPage({ params }) {
             return;
         }
 
+        router.refresh(); // Refresh server data
         router.push('/admin/posts');
     };
 
@@ -164,6 +202,16 @@ export default function EditPostPage({ params }) {
                             type="text"
                             value={formData.title}
                             onChange={handleTitleChange}
+                            onPaste={(e) => {
+                                setTimeout(() => {
+                                    const title = e.target.value;
+                                    setFormData(prev => ({
+                                        ...prev,
+                                        title,
+                                        slug: generateSlug(title)
+                                    }));
+                                }, 0);
+                            }}
                             placeholder="ব্লগের শিরোনাম"
                             className={styles.input}
                             required
@@ -183,6 +231,36 @@ export default function EditPostPage({ params }) {
                             />
                             <span className={styles.inputInfo}>/posts/{formData.slug || 'your-slug'}</span>
                         </div>
+                    </div>
+
+                    {/* Cover Image */}
+                    <div className={styles.formGroup}>
+                        <label className={styles.label}>কভার ইমেজ</label>
+                        <div className={styles.coverUpload}>
+                            {formData.cover_image ? (
+                                <div className={styles.coverPreview}>
+                                    <img src={formData.cover_image} alt="Cover" />
+                                    <button
+                                        type="button"
+                                        onClick={() => setFormData({ ...formData, cover_image: '' })}
+                                        className={styles.removeCover}
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            ) : (
+                                <label className={styles.uploadBtn}>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleCoverUpload}
+                                        style={{ display: 'none' }}
+                                    />
+                                    {uploading ? 'আপলোড হচ্ছে...' : '📷 কভার আপলোড করুন'}
+                                </label>
+                            )}
+                        </div>
+                        <span className={styles.inputHint}>কভার না দিলে ডিফল্ট ব্যবহার হবে</span>
                     </div>
 
                     {/* Category & Status */}

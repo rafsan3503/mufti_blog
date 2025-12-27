@@ -5,7 +5,7 @@ import { getCategories } from '@/lib/data';
 import { categories as staticCategories } from '@/data/posts';
 import styles from './page.module.css';
 
-export const revalidate = 60;
+export const revalidate = 0; // No cache - always fetch fresh data
 
 export const metadata = {
     title: 'বিভাগসমূহ | মুফতি আনিছুর রহমান',

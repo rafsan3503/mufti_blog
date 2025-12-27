@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
     };
 }
 
-export const revalidate = 60;
+export const revalidate = 0; // No cache - always fetch fresh data
 
 export default async function BookDetailPage({ params }) {
     const { slug } = await params;

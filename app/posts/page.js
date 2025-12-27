@@ -2,12 +2,13 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Sidebar from '@/components/Sidebar';
 import PostCard from '@/components/PostCard';
+import RefreshOnMount from '@/components/RefreshOnMount';
 import Link from 'next/link';
 import { getPosts, getCategories } from '@/lib/data';
 import { posts as staticPosts, categories as staticCategories } from '@/data/posts';
 import styles from './page.module.css';
 
-export const revalidate = 60;
+export const revalidate = 0; // No cache - always fetch fresh data
 
 export const metadata = {
     title: 'সব ব্লগ | মুফতি আনিছুর রহমান',
@@ -28,6 +29,7 @@ export default async function PostsPage() {
 
     return (
         <>
+            <RefreshOnMount />
             <Header />
             <main className={styles.main}>
                 <div className="container">
