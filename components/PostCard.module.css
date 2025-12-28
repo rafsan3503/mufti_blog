@@ -116,16 +116,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--space-sm);
     padding: var(--space-sm) var(--space-md);
     border-top: 1px solid var(--color-border-light);
     background: var(--color-bg-primary);
     margin-top: auto;
+    flex-wrap: wrap;
 }
 
 .meta {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
+    flex-shrink: 0;
 }
 
 .date,
@@ -136,19 +139,27 @@
     gap: 4px;
     font-size: var(--fs-xs);
     color: var(--color-text-muted);
+    white-space: nowrap;
 }
 
 .tags {
     display: flex;
     gap: var(--space-xs);
+    flex-wrap: wrap;
+    max-width: 50%;
+    overflow: hidden;
 }
 
 .smallTag {
     font-size: 10px;
     padding: 2px 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .cardFooter {
         flex-direction: column;
         align-items: flex-start;
@@ -156,6 +167,12 @@
     }
 
     .tags {
-        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .meta {
+        flex-wrap: wrap;
     }
 }
